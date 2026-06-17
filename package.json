@@ -1,0 +1,11 @@
+{
+  "name": "zhihu-radar",
+  "version": "0.2.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vercel dev",
+    "start": "node server.js",
+    "check": "node --check api/search.js && node --check server.js && node --check assets/app.js && node --check assets/sample-data.js"
+  }
+}
