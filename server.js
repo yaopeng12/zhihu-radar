@@ -4,6 +4,7 @@ import { extname, join, normalize } from "node:path";
 import searchHandler from "./api/search.js";
 
 const root = process.cwd();
+const publicRoot = join(root, "public");
 const port = Number(process.env.PORT || 8080);
 
 const mimeTypes = {
@@ -23,7 +24,7 @@ createServer(async (request, response) => {
 
   const pathname = url.pathname === "/" ? "/index.html" : url.pathname;
   const safePath = normalize(pathname).replace(/^(\.\.[/\\])+/, "");
-  const filePath = join(root, safePath);
+  const filePath = join(publicRoot, safePath);
 
   try {
     const content = await readFile(filePath);
