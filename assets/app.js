@@ -11,8 +11,8 @@
   function normalizeReport(raw) {
     const questions = Array.isArray(raw.questions) ? raw.questions : [];
     return {
-      keyword: raw.keyword || keywordInput?.value || "鐭ヤ箮瓒嬪娍",
-      summary: raw.summary || "鏆傛湭鐢熸垚鎽樿銆?,
+      keyword: raw.keyword || keywordInput?.value || "知乎趋势",
+      summary: raw.summary || "暂未生成摘要。",
       tags: Array.isArray(raw.tags) ? raw.tags : [],
       pains: Array.isArray(raw.pains) ? raw.pains : [],
       questions,
@@ -50,10 +50,10 @@
         });
       }
       render(currentReport);
-      showToast("鍒嗘瀽宸叉洿鏂?);
+      showToast("分析已更新");
     } catch (error) {
       console.error(error);
-      showToast("API 璇锋眰澶辫触锛屽凡淇濈暀褰撳墠鎶ュ憡");
+      showToast("API 请求失败，已保留当前报告");
     } finally {
       setLoading(false);
     }
@@ -62,16 +62,16 @@
   function render(report) {
     const totalFollowers = sum(report.questions, "followers");
     const totalAnswers = sum(report.questions, "answers");
-    const opportunities = report.questions.filter((item) => item.opportunity === "楂?).length;
+    const opportunities = report.questions.filter((item) => item.opportunity === "高").length;
 
-    text("#page-title", `${report.keyword} 瓒嬪娍娲炲療`);
+    text("#page-title", `${report.keyword} 趋势洞察`);
     text("#metric-questions", formatNumber(report.questions.length));
     text("#metric-followers", formatNumber(totalFollowers));
     text("#metric-answers", formatNumber(totalAnswers));
     text("#metric-opportunities", formatNumber(opportunities));
     text("#summary", report.summary);
     text("#source-badge", report.source);
-    text("#updated-at", `鏇存柊浜?${formatDate(report.updatedAt)}`);
+    text("#updated-at", `更新于 ${formatDate(report.updatedAt)}`);
 
     renderTags(report.tags);
     renderList("#pain-list", report.pains);
@@ -110,7 +110,7 @@
           <td><a href="${escapeAttribute(question.url)}" target="_blank" rel="noreferrer">${escapeHtml(question.title)}</a></td>
           <td>${formatNumber(question.followers || 0)}</td>
           <td>${formatNumber(question.answers || 0)}</td>
-          <td><span class="opportunity">${escapeHtml(question.opportunity || "寰呰瘎浼?)}</span></td>
+          <td><span class="opportunity">${escapeHtml(question.opportunity || "待评估")}</span></td>
         `;
         return row;
       })
@@ -124,9 +124,9 @@
         const card = document.createElement("article");
         card.className = "idea-card";
         card.innerHTML = `
-          <span>${escapeHtml(idea.platform || "鍐呭骞冲彴")}</span>
-          <h4>${escapeHtml(idea.title || "鏈懡鍚嶉€夐")}</h4>
-          <p>${escapeHtml(idea.angle || "琛ュ厖鍒嗘瀽瑙掑害銆?)}</p>
+          <span>${escapeHtml(idea.platform || "内容平台")}</span>
+          <h4>${escapeHtml(idea.title || "未命名选题")}</h4>
+          <p>${escapeHtml(idea.angle || "补充分析角度。")}</p>
         `;
         return card;
       })
@@ -137,14 +137,14 @@
     const questions = report.questions
       .map(
         (item, index) =>
-          `${index + 1}. [${item.title}](${item.url}) - 鍏虫敞 ${item.followers || 0} / 鍥炵瓟 ${item.answers || 0} / 鏈轰細 ${item.opportunity || "寰呰瘎浼?}`
+          `${index + 1}. [${item.title}](${item.url}) - 关注 ${item.followers || 0} / 回答 ${item.answers || 0} / 机会 ${item.opportunity || "待评估"}`
       )
       .join("\n");
     const ideas = report.ideas
-      .map((item, index) => `${index + 1}. ${item.platform}锛?{item.title}\n   ${item.angle}`)
+      .map((item, index) => `${index + 1}. ${item.platform}：${item.title}\n   ${item.angle}`)
       .join("\n");
 
-    return `# ${report.keyword} 瓒嬪娍娲炲療\n\n## 鎽樿\n${report.summary}\n\n## 鏍囩\n${report.tags.join("銆?)}\n\n## 鐢ㄦ埛鐥涚偣\n${report.pains.map((item) => `- ${item}`).join("\n")}\n\n## 闂姹燶n${questions}\n\n## 閫夐寤鸿\n${ideas}\n`;
+    return `# ${report.keyword} 趋势洞察\n\n## 摘要\n${report.summary}\n\n## 标签\n${report.tags.join("、")}\n\n## 用户痛点\n${report.pains.map((item) => `- ${item}`).join("\n")}\n\n## 问题池\n${questions}\n\n## 选题建议\n${ideas}\n`;
   }
 
   function setLoading(isLoading) {
@@ -202,7 +202,7 @@
 
   copyBtn.addEventListener("click", async () => {
     await navigator.clipboard.writeText(toMarkdown(currentReport));
-    showToast("Markdown 鎶ュ憡宸插鍒?);
+    showToast("Markdown 报告已复制");
   });
 
   render(currentReport);
