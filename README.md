@@ -1,117 +1,138 @@
-# 鐭ヤ箮娲炲療闆疯揪
+# 知乎洞察雷达
 
-鐭ヤ箮娲炲療闆疯揪鏄竴涓紑婧愮殑涓枃鐭ヨ瘑鍙戠幇涓庡唴瀹归€夐宸ュ叿銆傚畠闈㈠悜鍒涗綔鑰呫€佷骇鍝佺粡鐞嗐€佺爺绌跺憳鍜岃繍钀ュ悓瀛︼紝鐢ㄧ煡涔庡紑鏀?API 鎴栧吋瀹逛唬鐞嗘帴鍙ｏ紝鎶婂叧閿瘝鐩稿叧鐨勯棶棰樸€佽璁虹儹搴︺€佺敤鎴风棝鐐瑰拰閫夐鏈轰細鏁寸悊鎴愪竴涓彲浠ョ洿鎺ラ槄璇诲拰瀵煎嚭鐨勮秼鍔挎姤鍛娿€?
-鍦ㄧ嚎璁块棶椤甸潰锛?
-- 棣栭〉 / 宸ヤ綔鍙帮細`/`
-- 鎬昏鍖猴細`/#overview`
-- 闂姹狅細`/#questions`
-- 閫夐寤鸿锛歚/#ideas`
-- 瀵煎嚭鍖猴細`/#export`
+知乎洞察雷达是一个开源的中文知识发现与内容选题工具。它面向创作者、产品经理、研究员和运营同学，用知乎开放 API 或兼容代理接口，把关键词相关的问题、讨论热度、用户痛点和选题机会整理成一个可以直接阅读和导出的趋势报告。
 
-## 瑙ｅ喅浠€涔堥棶棰?
-鍦ㄧ煡涔庝笂鍋氱爺绌堕€氬父浼氶亣鍒拌繖浜涢棶棰橈細
+在线访问页面：
 
-- 鎼滅储缁撴灉寰堝锛屼絾寰堥毦蹇€熷垽鏂摢浜涢棶棰樺€煎緱缁х画杩借釜銆?- 鍒涗綔鑰呴渶瑕佹壘鍒伴珮鍏虫敞銆佸己鐥涚偣銆佽繕娌℃湁琚厖鍒嗗洖绛旂殑閫夐銆?- 浜у搧鍜岃繍钀ュ悓瀛︽兂浜嗚В鐢ㄦ埛鐪熷疄鐤戦棶锛屽嵈涓嶆兂鎵嬪伐澶嶅埗鏁寸悊銆?- 鍥㈤槦甯屾湜鏈変竴涓彲鑷墭绠°€佸彲浜屾寮€鍙戙€佸彲鎺ュ叆澶氫釜鏁版嵁婧愮殑宸ュ叿銆?
-鐭ヤ箮娲炲療闆疯揪鎶婅繖浜涙祦绋嬫暣鐞嗘垚涓€涓交閲忓伐浣滃彴锛氳緭鍏ュ叧閿瘝锛屽緱鍒拌秼鍔挎憳瑕併€侀棶棰樻睜銆佺棝鐐瑰垪琛ㄥ拰骞冲彴鍖栭€夐寤鸿銆?
-## 褰撳墠鍔熻兘
+- GitHub 仓库：<https://github.com/yaopeng12/zhihu-radar>
+- 首页 / 工作台：<https://yaopeng12.github.io/zhihu-radar/>
+- 总览区：<https://yaopeng12.github.io/zhihu-radar/#overview>
+- 问题池：<https://yaopeng12.github.io/zhihu-radar/#questions>
+- 选题建议：<https://yaopeng12.github.io/zhihu-radar/#ideas>
+- 导出区：<https://yaopeng12.github.io/zhihu-radar/#export>
 
-- 鍏抽敭璇嶅垎鏋愬伐浣滃彴
-- 婕旂ず鏁版嵁妯″紡锛孏itHub Pages 鍙洿鎺ヨ繍琛?- 鍙厤缃煡涔?API 浠ｇ悊绔偣
-- 瓒嬪娍鎽樿銆佹爣绛俱€佺棝鐐瑰拰鍐呭鏈轰細灞曠ず
-- 闂姹犺〃鏍硷紝鍖呭惈鍏虫敞鏁般€佸洖绛旀暟鍜屾満浼氱瓑绾?- 閫夐寤鸿鍗＄墖锛岃鐩栧叕浼楀彿銆佸皬绾功銆丅 绔欍€佹挱瀹㈢瓑鍦烘櫙
-- 涓€閿鍒?Markdown 鎶ュ憡
-- 鏃犳瀯寤轰緷璧栵紝閫傚悎 GitHub Pages銆丯ginx銆丏ocker 闈欐€佹墭绠?
-## 鍦ㄧ嚎婕旂ず
+## 解决什么问题
 
-濡傛灉浣犳妸杩欎釜浠撳簱閮ㄧ讲鍒?GitHub Pages锛岃闂湴鍧€閫氬父鏄細
+在知乎上做研究通常会遇到这些问题：
+
+- 搜索结果很多，但很难快速判断哪些问题值得继续追踪。
+- 创作者需要找到高关注、强痛点、还没有被充分回答的选题。
+- 产品和运营同学想了解用户真实疑问，却不想手工复制整理。
+- 团队希望有一个可自托管、可二次开发、可接入多个数据源的工具。
+
+知乎洞察雷达把这些流程整理成一个轻量工作台：输入关键词，得到趋势摘要、问题池、痛点列表和平台化选题建议。
+
+## 当前功能
+
+- 关键词分析工作台
+- 演示数据模式，GitHub Pages 可直接运行
+- 可配置知乎 API 代理端点
+- 趋势摘要、标签、痛点和内容机会展示
+- 问题池表格，包含关注数、回答数和机会等级
+- 选题建议卡片，覆盖公众号、小红书、B 站、播客等场景
+- 一键复制 Markdown 报告
+- 无构建依赖，适合 GitHub Pages、Nginx、Docker 静态托管
+
+## 在线演示
+
+如果你把这个仓库部署到 GitHub Pages，访问地址通常是：
 
 ```text
-https://<your-github-username>.github.io/zhihu-radar/
+https://yaopeng12.github.io/zhihu-radar/
 ```
 
-椤圭洰鍖呭惈 `.github/workflows/pages.yml`銆傛帹閫佸埌 GitHub 鍚庯紝鍦ㄤ粨搴撶殑 `Settings -> Pages` 涓妸 Source 璁剧疆涓?`GitHub Actions`锛屼箣鍚庢瘡娆℃帹閫?`main` 鍒嗘敮閮戒細鑷姩閮ㄧ讲銆?
-## 鏈湴杩愯
+项目包含 `.github/workflows/pages.yml`。推送到 GitHub 后，在仓库的 `Settings -> Pages` 中把 Source 设置为 `GitHub Actions`，之后每次推送 `main` 分支都会自动部署。
 
-鍥犱负椤圭洰鏄潤鎬侀〉闈紝鍙互鐩存帴鎵撳紑 `index.html`銆傚鏋滀綘鎯虫ā鎷熺嚎涓婄幆澧冿細
+## 本地运行
+
+因为项目是静态页面，可以直接打开 `index.html`。如果你想模拟线上环境：
 
 ```bash
 python -m http.server 4173
 ```
 
-鐒跺悗璁块棶锛?
+然后访问：
+
 ```text
 http://localhost:4173
 ```
 
-## 鎺ュ叆鐭ヤ箮寮€鏀?API
+## 接入知乎开放 API
 
-娴忚鍣ㄧ涓嶅簲璇ョ洿鎺ヤ繚瀛樼煡涔?API Key銆傛帹鑽愬仛娉曟槸鑷缓涓€涓湇鍔＄浠ｇ悊锛?
+浏览器端不应该直接保存知乎 API Key。推荐做法是自建一个服务端代理：
+
 ```text
 GET /api/zhihu/search?q=AI%20Agent
 ```
 
-浠ｇ悊鎺ュ彛杩斿洖涓嬮潰杩欑缁撴瀯鍗冲彲琚墠绔洿鎺ユ覆鏌擄細
+代理接口返回下面这种结构即可被前端直接渲染：
 
 ```json
 {
   "keyword": "AI Agent",
-  "summary": "杩欓噷鏄秼鍔挎憳瑕?,
-  "tags": ["宸ュ叿鏁堢巼", "鑱屼笟褰卞搷"],
-  "pains": ["鐢ㄦ埛鐥涚偣 1", "鐢ㄦ埛鐥涚偣 2"],
+  "summary": "这里是趋势摘要",
+  "tags": ["工具效率", "职业影响"],
+  "pains": ["用户痛点 1", "用户痛点 2"],
   "questions": [
     {
-      "title": "AI Agent 鍒板簳瑙ｅ喅浜嗕粈涔堢湡瀹為棶棰橈紵",
+      "title": "AI Agent 到底解决了什么真实问题？",
       "url": "https://www.zhihu.com/question/xxx",
       "followers": 12800,
       "answers": 243,
-      "opportunity": "楂?
+      "opportunity": "高"
     }
   ],
   "ideas": [
     {
-      "platform": "鍏紬鍙?,
-      "title": "AI Agent 娌℃湁閭ｄ箞绁烇紝浣嗚繖 5 涓満鏅凡缁忓€煎緱鐢?,
-      "angle": "鐢ㄧ湡瀹炰笟鍔″満鏅媶瑙ｄ环鍊笺€?
+      "platform": "公众号",
+      "title": "AI Agent 没有那么神，但这 5 个场景已经值得用",
+      "angle": "用真实业务场景拆解价值。"
     }
   ]
 }
 ```
 
-鍓嶇椤甸潰宸︿晶鐨勨€滅煡涔?API 浠ｇ悊绔偣鈥濆～鍏ヤ綘鐨勪唬鐞?URL 鍚庯紝浼氳嚜鍔ㄥ甫涓?`q` 鏌ヨ鍙傛暟銆?
-## Docker 閮ㄧ讲
+前端页面左侧的“知乎 API 代理端点”填入你的代理 URL 后，会自动带上 `q` 查询参数。
+
+## Docker 部署
 
 ```bash
 docker build -t zhihu-radar .
 docker run --rm -p 8080:80 zhihu-radar
 ```
 
-璁块棶锛?
+访问：
+
 ```text
 http://localhost:8080
 ```
 
-## 椤圭洰缁撴瀯
+## 项目结构
 
 ```text
 .
-鈹溾攢鈹€ index.html
-鈹溾攢鈹€ assets
-鈹?  鈹溾攢鈹€ app.js
-鈹?  鈹溾攢鈹€ sample-data.js
-鈹?  鈹斺攢鈹€ styles.css
-鈹溾攢鈹€ .github
-鈹?  鈹斺攢鈹€ workflows
-鈹?      鈹斺攢鈹€ pages.yml
-鈹溾攢鈹€ Dockerfile
-鈹溾攢鈹€ LICENSE
-鈹斺攢鈹€ README.md
+├── index.html
+├── assets
+│   ├── app.js
+│   ├── sample-data.js
+│   └── styles.css
+├── .github
+│   └── workflows
+│       └── pages.yml
+├── Dockerfile
+├── LICENSE
+└── README.md
 ```
 
-## 璺嚎鍥?
-- 澧炲姞瀹樻柟鐭ヤ箮 API 浠ｇ悊妯℃澘
-- 鎺ュ叆 OpenAI銆丏eepSeek銆侀€氫箟鍗冮棶鎴?Ollama 鐢熸垚鎽樿
-- 鏀寔鍏抽敭璇嶈闃呭拰鏃ユ姤
-- 鏀寔 CSV銆丳DF銆丯otion銆侀涔﹀鍑?- 澧炲姞澶氭暟鎹簮鎻掍欢锛氬井鍗氥€佸皬绾功銆丅 绔欍€丷eddit銆丠acker News
-- 澧炲姞 PostgreSQL/SQLite 瀛樺偍锛岀敤浜庨暱鏈熻秼鍔胯窡韪?
-## 寮€婧愬崗璁?
+## 路线图
+
+- 增加官方知乎 API 代理模板
+- 接入 OpenAI、DeepSeek、通义千问或 Ollama 生成摘要
+- 支持关键词订阅和日报
+- 支持 CSV、PDF、Notion、飞书导出
+- 增加多数据源插件：微博、小红书、B 站、Reddit、Hacker News
+- 增加 PostgreSQL/SQLite 存储，用于长期趋势跟踪
+
+## 开源协议
+
 MIT License
