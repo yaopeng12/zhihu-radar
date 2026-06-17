@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://zhihu.shoppilot.help/sitemap.xml
