@@ -5,38 +5,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta
       name="description"
-      content="鐭ヤ箮娲炲療闆疯揪锛氬熀浜庣煡涔庡紑鏀?API 鐨勫叧閿瘝鐮旂┒銆佽秼鍔挎礊瀵熷拰鍐呭閫夐宸ュ叿銆?
+      content="知乎洞察雷达：基于知乎开放 API 的关键词研究、趋势洞察和内容选题工具。"
     />
-    <title>鐭ヤ箮娲炲療闆疯揪</title>
+    <title>知乎洞察雷达</title>
     <link rel="stylesheet" href="./assets/styles.css" />
   </head>
   <body>
     <main class="app-shell">
-      <section class="workspace" aria-label="鐭ヤ箮娲炲療闆疯揪宸ヤ綔鍙?>
+      <section class="workspace" aria-label="知乎洞察雷达工作台">
         <aside class="sidebar">
           <div class="brand">
-            <span class="brand-mark">鐭?/span>
+            <span class="brand-mark">知</span>
             <div>
-              <h1>鐭ヤ箮娲炲療闆疯揪</h1>
-              <p>鐭ヨ瘑鍙戠幇 / 閫夐鍒嗘瀽 / 瓒嬪娍鐩戞帶</p>
+              <h1>知乎洞察雷达</h1>
+              <p>知识发现 / 选题分析 / 趋势监控</p>
             </div>
           </div>
 
           <form class="search-panel" id="radar-form">
-            <label for="keyword">鍏抽敭璇?/label>
+            <label for="keyword">关键词</label>
             <div class="input-row">
               <input
                 id="keyword"
                 name="keyword"
                 type="search"
                 value="AI Agent"
-                placeholder="渚嬪锛欰I Agent銆佽€冪爺銆佹柊鑳芥簮杞?
+                placeholder="例如：AI Agent、考研、新能源车"
                 autocomplete="off"
               />
-              <button type="submit" title="鍒嗘瀽鍏抽敭璇?>鍒嗘瀽</button>
+              <button type="submit" title="分析关键词">分析</button>
             </div>
 
-            <label for="api-endpoint">鐭ヤ箮 API 浠ｇ悊绔偣</label>
+            <label for="api-endpoint">知乎 API 代理端点</label>
             <input
               id="api-endpoint"
               name="endpoint"
@@ -44,14 +44,15 @@
               placeholder="https://your-api.example.com/search"
             />
             <p class="field-note">
-              鐣欑┖鏃朵娇鐢ㄦ紨绀烘暟鎹€傜湡瀹為儴缃插缓璁€氳繃鏈嶅姟绔唬鐞嗕繚瀛?API Key銆?            </p>
+              留空时使用演示数据。真实部署建议通过服务端代理保存 API Key。
+            </p>
           </form>
 
-          <nav class="nav-stack" aria-label="椤甸潰瀵艰埅">
-            <a href="#overview">鎬昏</a>
-            <a href="#questions">闂姹?/a>
-            <a href="#ideas">閫夐寤鸿</a>
-            <a href="#export">瀵煎嚭</a>
+          <nav class="nav-stack" aria-label="页面导航">
+            <a href="#overview">总览</a>
+            <a href="#questions">问题池</a>
+            <a href="#ideas">选题建议</a>
+            <a href="#export">导出</a>
           </nav>
         </aside>
 
@@ -59,29 +60,29 @@
           <header class="topbar">
             <div>
               <p class="eyebrow">Open Source Zhihu Intelligence</p>
-              <h2 id="page-title">AI Agent 瓒嬪娍娲炲療</h2>
+              <h2 id="page-title">AI Agent 趋势洞察</h2>
             </div>
             <div class="actions">
-              <button id="refresh-btn" type="button" title="鍒锋柊褰撳墠鍒嗘瀽">鍒锋柊</button>
-              <button id="copy-btn" type="button" title="澶嶅埗 Markdown 鎶ュ憡">澶嶅埗鎶ュ憡</button>
+              <button id="refresh-btn" type="button" title="刷新当前分析">刷新</button>
+              <button id="copy-btn" type="button" title="复制 Markdown 报告">复制报告</button>
             </div>
           </header>
 
           <section class="metric-grid" id="overview">
             <article class="metric">
-              <span>鐩稿叧闂</span>
+              <span>相关问题</span>
               <strong id="metric-questions">0</strong>
             </article>
             <article class="metric">
-              <span>鎬诲叧娉?/span>
+              <span>总关注</span>
               <strong id="metric-followers">0</strong>
             </article>
             <article class="metric">
-              <span>鎬诲洖绛?/span>
+              <span>总回答</span>
               <strong id="metric-answers">0</strong>
             </article>
             <article class="metric">
-              <span>鍐呭鏈轰細</span>
+              <span>内容机会</span>
               <strong id="metric-opportunities">0</strong>
             </article>
           </section>
@@ -89,7 +90,7 @@
           <section class="insight-layout">
             <article class="panel summary-panel">
               <div class="panel-heading">
-                <h3>瓒嬪娍鎽樿</h3>
+                <h3>趋势摘要</h3>
                 <span id="source-badge">Demo</span>
               </div>
               <p id="summary"></p>
@@ -98,7 +99,7 @@
 
             <article class="panel">
               <div class="panel-heading">
-                <h3>鐢ㄦ埛鐥涚偣</h3>
+                <h3>用户痛点</h3>
               </div>
               <ul class="pain-list" id="pain-list"></ul>
             </article>
@@ -106,17 +107,17 @@
 
           <section class="panel" id="questions">
             <div class="panel-heading">
-              <h3>闂姹?/h3>
+              <h3>问题池</h3>
               <span id="updated-at"></span>
             </div>
             <div class="table-wrap">
               <table>
                 <thead>
                   <tr>
-                    <th>闂</th>
-                    <th>鍏虫敞</th>
-                    <th>鍥炵瓟</th>
-                    <th>鏈轰細</th>
+                    <th>问题</th>
+                    <th>关注</th>
+                    <th>回答</th>
+                    <th>机会</th>
                   </tr>
                 </thead>
                 <tbody id="question-table"></tbody>
@@ -126,23 +127,25 @@
 
           <section class="panel" id="ideas">
             <div class="panel-heading">
-              <h3>閫夐寤鸿</h3>
+              <h3>选题建议</h3>
             </div>
             <div class="idea-grid" id="idea-grid"></div>
           </section>
 
           <section class="panel export-panel" id="export">
             <div>
-              <h3>寮€婧愰儴缃?/h3>
+              <h3>开源部署</h3>
               <p>
-                鏈」鐩彲浠ョ洿鎺ョ敤 GitHub Pages 浣滀负鍦ㄧ嚎婕旂ず锛屼篃鍙互鎺ュ叆鏈嶅姟绔唬鐞嗐€佹暟鎹簱鍜?                LLM 鐢熸垚鐪熷疄鍒嗘瀽鎶ュ憡銆?              </p>
+                本项目可以直接用 GitHub Pages 作为在线演示，也可以接入服务端代理、数据库和
+                LLM 生成真实分析报告。
+              </p>
             </div>
             <a
               class="repo-link"
-              href="https://github.com/"
+              href="https://github.com/yaopeng12/zhihu-radar"
               target="_blank"
               rel="noreferrer"
-              title="鎵撳紑 GitHub"
+              title="打开 GitHub"
             >
               GitHub
             </a>
