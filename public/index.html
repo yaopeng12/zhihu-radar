@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="知乎洞察雷达：基于知乎开放 API 的关键词研究、趋势洞察和内容选题工具。"
+    />
+    <title>知乎洞察雷达</title>
+    <link rel="stylesheet" href="./assets/styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="workspace" aria-label="知乎洞察雷达工作台">
+        <aside class="sidebar">
+          <div class="brand">
+            <span class="brand-mark">知</span>
+            <div>
+              <h1>知乎洞察雷达</h1>
+              <p>知识发现 / 选题分析 / 趋势监控</p>
+            </div>
+          </div>
+
+          <form class="search-panel" id="radar-form">
+            <label for="keyword">关键词</label>
+            <div class="input-row">
+              <input
+                id="keyword"
+                name="keyword"
+                type="search"
+                value="AI Agent"
+                placeholder="例如：AI Agent、考研、新能源车"
+                autocomplete="off"
+              />
+              <button type="submit" title="分析关键词">分析</button>
+            </div>
+
+            <label for="api-endpoint">搜索接口</label>
+            <input
+              id="api-endpoint"
+              name="endpoint"
+              type="text"
+              value="/api/search"
+              placeholder="/api/search"
+            />
+
+            <label for="api-key">知乎 API Key</label>
+            <input
+              id="api-key"
+              name="apiKey"
+              type="password"
+              placeholder="可选：仅用于当前浏览器请求"
+            />
+            <p class="field-note">
+              Vercel 部署时建议在环境变量里保存 API Key；临时体验也可以在这里填写。
+            </p>
+          </form>
+
+          <nav class="nav-stack" aria-label="页面导航">
+            <a href="#overview">总览</a>
+            <a href="#questions">问题池</a>
+            <a href="#ideas">选题建议</a>
+            <a href="#export">导出</a>
+          </nav>
+        </aside>
+
+        <section class="content-area">
+          <header class="topbar">
+            <div>
+              <p class="eyebrow">Open Source Zhihu Intelligence</p>
+              <h2 id="page-title">AI Agent 趋势洞察</h2>
+            </div>
+            <div class="actions">
+              <button id="refresh-btn" type="button" title="刷新当前分析">刷新</button>
+              <button id="copy-btn" type="button" title="复制 Markdown 报告">复制报告</button>
+            </div>
+          </header>
+
+          <section class="metric-grid" id="overview">
+            <article class="metric">
+              <span>相关问题</span>
+              <strong id="metric-questions">0</strong>
+            </article>
+            <article class="metric">
+              <span>总关注</span>
+              <strong id="metric-followers">0</strong>
+            </article>
+            <article class="metric">
+              <span>总回答</span>
+              <strong id="metric-answers">0</strong>
+            </article>
+            <article class="metric">
+              <span>内容机会</span>
+              <strong id="metric-opportunities">0</strong>
+            </article>
+          </section>
+
+          <section class="insight-layout">
+            <article class="panel summary-panel">
+              <div class="panel-heading">
+                <h3>趋势摘要</h3>
+                <span id="source-badge">Demo</span>
+              </div>
+              <p id="summary"></p>
+              <div class="tag-cloud" id="tag-cloud"></div>
+            </article>
+
+            <article class="panel">
+              <div class="panel-heading">
+                <h3>用户痛点</h3>
+              </div>
+              <ul class="pain-list" id="pain-list"></ul>
+            </article>
+          </section>
+
+          <section class="panel" id="questions">
+            <div class="panel-heading">
+              <h3>问题池</h3>
+              <span id="updated-at"></span>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>问题</th>
+                    <th>关注</th>
+                    <th>回答</th>
+                    <th>机会</th>
+                  </tr>
+                </thead>
+                <tbody id="question-table"></tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="panel" id="ideas">
+            <div class="panel-heading">
+              <h3>选题建议</h3>
+            </div>
+            <div class="idea-grid" id="idea-grid"></div>
+          </section>
+
+          <section class="panel export-panel" id="export">
+            <div>
+              <h3>开源部署</h3>
+              <p>
+                本项目可以直接用 GitHub Pages 作为在线演示，也可以接入服务端代理、数据库和
+                LLM 生成真实分析报告。
+              </p>
+            </div>
+            <a
+              class="repo-link"
+              href="https://github.com/yaopeng12/zhihu-radar"
+              target="_blank"
+              rel="noreferrer"
+              title="打开 GitHub"
+            >
+              GitHub
+            </a>
+          </section>
+        </section>
+      </section>
+    </main>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <script src="./assets/sample-data.js"></script>
+    <script src="./assets/app.js"></script>
+  </body>
+</html>
