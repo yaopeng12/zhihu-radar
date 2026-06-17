@@ -5,14 +5,13 @@
 在线访问页面：
 
 - GitHub 仓库：<https://github.com/yaopeng12/zhihu-radar>
-- GitHub Pages 演示：<https://yaopeng12.github.io/zhihu-radar/>
 - Vercel 真实 API 部署：配置 `ZHIHU_SEARCH_URL` 后访问你的 Vercel 域名
 - 首页 / 工作台：`/`
 - 搜索 API：`/api/search?q=AI%20Agent`
-- 总览区：<https://yaopeng12.github.io/zhihu-radar/#overview>
-- 问题池：<https://yaopeng12.github.io/zhihu-radar/#questions>
-- 选题建议：<https://yaopeng12.github.io/zhihu-radar/#ideas>
-- 导出区：<https://yaopeng12.github.io/zhihu-radar/#export>
+- 总览区：<(https://zhihu-radar.vercel.app>
+- 问题池：<https://zhihu-radar.vercel.app>
+- 选题建议：<https://zhihu-radar.vercel.app>
+- 导出区：<https://zhihu-radar.vercel.app>
 
 ## 解决什么问题
 
