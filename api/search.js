@@ -61,6 +61,7 @@ async function callZhihuSearch({ apiKey, keyword, searchUrl }) {
       error.statusCode = result.status;
       throw error;
     }
+    assertBusinessSuccess(body);
     return body;
   } finally {
     clearTimeout(timer);
@@ -85,7 +86,7 @@ function parseJsonResponse(text, contentType, searchUrl) {
 }
 
 function buildReport(keyword, upstream) {
-  const questions = extractItems(upstream).map((item) => normalizeItem(item, keyword));
+  const questions = extractItems(unwrapPayload(upstream)).map((item) => normalizeItem(item, keyword));
   const tags = extractTags(keyword, questions);
   const highOpportunityCount = questions.filter((item) => item.opportunity === "高").length;
 
@@ -114,6 +115,26 @@ function extractItems(payload) {
     payload.data?.list
   ];
   return candidates.find(Array.isArray) || [];
+}
+
+function unwrapPayload(payload) {
+  if (payload && typeof payload === "object" && "Data" in payload) return payload.Data;
+  if (payload && typeof payload === "object" && "data" in payload) return payload.data;
+  return payload;
+}
+
+function assertBusinessSuccess(payload) {
+  if (!payload || typeof payload !== "object") return;
+
+  const code = payload.Code ?? payload.code;
+  if (code === undefined || code === null || code === "" || code === 0 || code === "0" || code === 200 || code === "200") {
+    return;
+  }
+
+  const message = payload.Message || payload.message || payload.Error || payload.error || `知乎 API 业务错误码 ${code}`;
+  const error = new Error(message);
+  error.statusCode = 502;
+  throw error;
 }
 
 function normalizeItem(item, keyword) {
