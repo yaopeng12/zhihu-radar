@@ -8,10 +8,10 @@
 - Vercel 真实 API 部署：配置 `ZHIHU_SEARCH_URL` 后访问你的 Vercel 域名
 - 首页 / 工作台：`/`
 - 搜索 API：`/api/search?q=AI%20Agent`
-- 总览区：<(https://zhihu-radar.vercel.app>
-- 问题池：<https://zhihu-radar.vercel.app>
-- 选题建议：<https://zhihu-radar.vercel.app>
-- 导出区：<https://zhihu-radar.vercel.app>
+- 总览区：<https://zhihu-radar.vercel.app/>
+- 问题池：<https://zhihu-radar.vercel.app/>
+- 选题建议：<https://zhihu-radar.vercel.app/>
+- 导出区：<https://zhihu-radar.vercel.app/>
 
 ## 解决什么问题
 
@@ -30,6 +30,7 @@
 - 演示数据模式，GitHub Pages 可直接运行
 - Vercel Function 服务端代理：`/api/search`
 - 可配置知乎 API 搜索接口：`ZHIHU_SEARCH_URL`
+- 默认热度优先：合并 `zhihu_search` 与 `global_search` 候选，按 `RankingScore`、赞同数、评论数综合排序
 - 支持服务端 `ZHIHU_API_KEY`，也支持页面临时传入 API Key
 - 趋势摘要、标签、痛点和内容机会展示
 - 问题池表格，包含关注数、回答数和机会等级
@@ -70,6 +71,7 @@ ZHIHU_API_KEY=你的知乎开放 API Key
 ```text
 https://your-project.vercel.app/
 https://your-project.vercel.app/api/search?q=AI%20Agent
+https://your-project.vercel.app/api/search?q=AI%20Agent&sort=hot&strategy=hybrid
 ```
 
 如果不想在服务端保存 key，也可以只配置 `ZHIHU_SEARCH_URL`，然后在页面左侧的“知乎 API Key”输入框临时填写。这个 key 只会保存在当前浏览器的 localStorage 中，并通过 `x-zhihu-api-key` 请求头传给 `/api/search`。
@@ -125,6 +127,27 @@ GET /api/search?q=AI%20Agent
 ```
 
 如果你的知乎开放 API 返回字段不是 `data` / `results` / `items` / `list` 这几类常见结构，可以改 `api/search.js` 里的 `extractItems` 和 `normalizeItem` 两个函数做适配。
+
+## 热度排序策略
+
+`zhihu_search` 本身主要按相关性返回结果，最大只返回 10 条，并不保证高热度。项目默认使用 `strategy=hybrid`：
+
+- 调用 `ZHIHU_SEARCH_URL`，通常是 `zhihu_search`
+- 同时调用 `ZHIHU_GLOBAL_SEARCH_URL`，未配置时默认使用 `https://developer.zhihu.com/api/v1/content/global_search`
+- 去重后按热度分排序
+
+热度分计算方式：
+
+```text
+heatScore = RankingScore * 1000 + VoteUpCount * 2 + CommentCount * 6
+```
+
+你也可以通过接口参数控制：
+
+```text
+/api/search?q=AI%20Agent&sort=hot&strategy=hybrid
+/api/search?q=AI%20Agent&sort=relevance&strategy=single
+```
 
 ## Docker 部署
 
