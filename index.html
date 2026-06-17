@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="鐭ヤ箮娲炲療闆疯揪锛氬熀浜庣煡涔庡紑鏀?API 鐨勫叧閿瘝鐮旂┒銆佽秼鍔挎礊瀵熷拰鍐呭閫夐宸ュ叿銆?
+    />
+    <title>鐭ヤ箮娲炲療闆疯揪</title>
+    <link rel="stylesheet" href="./assets/styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="workspace" aria-label="鐭ヤ箮娲炲療闆疯揪宸ヤ綔鍙?>
+        <aside class="sidebar">
+          <div class="brand">
+            <span class="brand-mark">鐭?/span>
+            <div>
+              <h1>鐭ヤ箮娲炲療闆疯揪</h1>
+              <p>鐭ヨ瘑鍙戠幇 / 閫夐鍒嗘瀽 / 瓒嬪娍鐩戞帶</p>
+            </div>
+          </div>
+
+          <form class="search-panel" id="radar-form">
+            <label for="keyword">鍏抽敭璇?/label>
+            <div class="input-row">
+              <input
+                id="keyword"
+                name="keyword"
+                type="search"
+                value="AI Agent"
+                placeholder="渚嬪锛欰I Agent銆佽€冪爺銆佹柊鑳芥簮杞?
+                autocomplete="off"
+              />
+              <button type="submit" title="鍒嗘瀽鍏抽敭璇?>鍒嗘瀽</button>
+            </div>
+
+            <label for="api-endpoint">鐭ヤ箮 API 浠ｇ悊绔偣</label>
+            <input
+              id="api-endpoint"
+              name="endpoint"
+              type="url"
+              placeholder="https://your-api.example.com/search"
+            />
+            <p class="field-note">
+              鐣欑┖鏃朵娇鐢ㄦ紨绀烘暟鎹€傜湡瀹為儴缃插缓璁€氳繃鏈嶅姟绔唬鐞嗕繚瀛?API Key銆?            </p>
+          </form>
+
+          <nav class="nav-stack" aria-label="椤甸潰瀵艰埅">
+            <a href="#overview">鎬昏</a>
+            <a href="#questions">闂姹?/a>
+            <a href="#ideas">閫夐寤鸿</a>
+            <a href="#export">瀵煎嚭</a>
+          </nav>
+        </aside>
+
+        <section class="content-area">
+          <header class="topbar">
+            <div>
+              <p class="eyebrow">Open Source Zhihu Intelligence</p>
+              <h2 id="page-title">AI Agent 瓒嬪娍娲炲療</h2>
+            </div>
+            <div class="actions">
+              <button id="refresh-btn" type="button" title="鍒锋柊褰撳墠鍒嗘瀽">鍒锋柊</button>
+              <button id="copy-btn" type="button" title="澶嶅埗 Markdown 鎶ュ憡">澶嶅埗鎶ュ憡</button>
+            </div>
+          </header>
+
+          <section class="metric-grid" id="overview">
+            <article class="metric">
+              <span>鐩稿叧闂</span>
+              <strong id="metric-questions">0</strong>
+            </article>
+            <article class="metric">
+              <span>鎬诲叧娉?/span>
+              <strong id="metric-followers">0</strong>
+            </article>
+            <article class="metric">
+              <span>鎬诲洖绛?/span>
+              <strong id="metric-answers">0</strong>
+            </article>
+            <article class="metric">
+              <span>鍐呭鏈轰細</span>
+              <strong id="metric-opportunities">0</strong>
+            </article>
+          </section>
+
+          <section class="insight-layout">
+            <article class="panel summary-panel">
+              <div class="panel-heading">
+                <h3>瓒嬪娍鎽樿</h3>
+                <span id="source-badge">Demo</span>
+              </div>
+              <p id="summary"></p>
+              <div class="tag-cloud" id="tag-cloud"></div>
+            </article>
+
+            <article class="panel">
+              <div class="panel-heading">
+                <h3>鐢ㄦ埛鐥涚偣</h3>
+              </div>
+              <ul class="pain-list" id="pain-list"></ul>
+            </article>
+          </section>
+
+          <section class="panel" id="questions">
+            <div class="panel-heading">
+              <h3>闂姹?/h3>
+              <span id="updated-at"></span>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>闂</th>
+                    <th>鍏虫敞</th>
+                    <th>鍥炵瓟</th>
+                    <th>鏈轰細</th>
+                  </tr>
+                </thead>
+                <tbody id="question-table"></tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="panel" id="ideas">
+            <div class="panel-heading">
+              <h3>閫夐寤鸿</h3>
+            </div>
+            <div class="idea-grid" id="idea-grid"></div>
+          </section>
+
+          <section class="panel export-panel" id="export">
+            <div>
+              <h3>寮€婧愰儴缃?/h3>
+              <p>
+                鏈」鐩彲浠ョ洿鎺ョ敤 GitHub Pages 浣滀负鍦ㄧ嚎婕旂ず锛屼篃鍙互鎺ュ叆鏈嶅姟绔唬鐞嗐€佹暟鎹簱鍜?                LLM 鐢熸垚鐪熷疄鍒嗘瀽鎶ュ憡銆?              </p>
+            </div>
+            <a
+              class="repo-link"
+              href="https://github.com/"
+              target="_blank"
+              rel="noreferrer"
+              title="鎵撳紑 GitHub"
+            >
+              GitHub
+            </a>
+          </section>
+        </section>
+      </section>
+    </main>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <script src="./assets/sample-data.js"></script>
+    <script src="./assets/app.js"></script>
+  </body>
+</html>
