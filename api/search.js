@@ -127,22 +127,21 @@ function buildReport(keyword, upstream, options = {}) {
       extractItems(unwrapPayload(entry.body || entry)).map((item) => normalizeItem(item, keyword, entry.source))
     )
   );
-  if (options.sort === "hot") {
-    questions.sort((a, b) => b.heatScore - a.heatScore);
-  }
-  const tags = extractTags(keyword, questions);
-  const highOpportunityCount = questions.filter((item) => item.opportunity === "高").length;
+  questions.sort((a, b) => b.heatScore - a.heatScore);
+  const top10 = questions.slice(0, 10);
+  const tags = extractTags(keyword, top10);
+  const highOpportunityCount = top10.filter((item) => item.opportunity === "高").length;
 
   return {
     keyword,
     source: options.sort === "hot" ? "Zhihu API · 热度优先" : "Zhihu API",
     strategy: options.strategy || "single",
     updatedAt: new Date().toISOString(),
-    summary: summarize(keyword, questions),
+    summary: summarize(keyword, top10),
     tags,
-    pains: buildPains(keyword, questions),
-    questions,
-    ideas: buildIdeas(keyword, questions, highOpportunityCount),
+    pains: buildPains(keyword, top10),
+    questions: top10,
+    ideas: buildIdeas(keyword, top10, highOpportunityCount),
     rawCount: questions.length
   };
 }
@@ -236,8 +235,8 @@ function normalizeItem(item, keyword, source) {
 }
 
 function scoreOpportunity(followers, answers) {
-  if (followers >= 1000 && answers <= 80) return "高";
-  if (followers >= 300 || answers <= 30) return "中";
+  if (followers >= 500 && answers <= 100) return "高";
+  if (followers >= 100 || answers <= 50) return "中";
   return "低";
 }
 

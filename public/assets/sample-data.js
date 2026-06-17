@@ -1,3 +1,103 @@
+window.ZHIHU_RADAR_HOT_SAMPLE = {
+  items: [
+    {
+      rank: 1,
+      title: "如何看待 2026 年 AI Agent 大规模落地？",
+      url: "https://www.zhihu.com/question/example1",
+      heat: 9876543,
+      risingIndex: "热度上升",
+      excerpt: "随着大模型能力提升，AI Agent 正在从概念走向实际应用...",
+      metrics: { followers: 28500, answers: 412, viewCount: 1580000 }
+    },
+    {
+      rank: 2,
+      title: "新能源车渗透率突破 50% 后，传统车企该如何转型？",
+      url: "https://www.zhihu.com/question/example2",
+      heat: 8234567,
+      risingIndex: "新上榜",
+      excerpt: "新能源汽车市场持续高增长，传统车企面临前所未有的挑战...",
+      metrics: { followers: 19200, answers: 287, viewCount: 1230000 }
+    },
+    {
+      rank: 3,
+      title: "考研还是就业，2027 届毕业生该怎么选？",
+      url: "https://www.zhihu.com/question/example3",
+      heat: 7654321,
+      risingIndex: "",
+      excerpt: "就业形势变化让很多同学重新思考考研的性价比...",
+      metrics: { followers: 35600, answers: 523, viewCount: 2100000 }
+    },
+    {
+      rank: 4,
+      title: "远程办公三年后，你的工作效率真的提高了吗？",
+      url: "https://www.zhihu.com/question/example4",
+      heat: 6543210,
+      risingIndex: "热度上升",
+      excerpt: "远程办公从被迫选择变成了很多人的主动偏好...",
+      metrics: { followers: 15800, answers: 198, viewCount: 890000 }
+    },
+    {
+      rank: 5,
+      title: "普通人应该如何配置自己的投资组合？",
+      url: "https://www.zhihu.com/question/example5",
+      heat: 5432109,
+      risingIndex: "",
+      excerpt: "在利率下行和市场波动的背景下，资产配置变得尤为重要...",
+      metrics: { followers: 42100, answers: 651, viewCount: 3200000 }
+    },
+    {
+      rank: 6,
+      title: "为什么越来越多年轻人开始关注中医养生？",
+      url: "https://www.zhihu.com/question/example6",
+      heat: 4321098,
+      risingIndex: "新上榜",
+      excerpt: "从八段锦到中药奶茶，中医养生正在成为年轻人的新时尚...",
+      metrics: { followers: 12300, answers: 156, viewCount: 670000 }
+    },
+    {
+      rank: 7,
+      title: "Rust 会取代 C++ 成为系统编程的主流语言吗？",
+      url: "https://www.zhihu.com/question/example7",
+      heat: 3210987,
+      risingIndex: "",
+      excerpt: "Rust 在安全性和性能之间的平衡让它备受关注...",
+      metrics: { followers: 18700, answers: 234, viewCount: 920000 }
+    },
+    {
+      rank: 8,
+      title: "如何评价 OpenAI 最新发布的 GPT-5？",
+      url: "https://www.zhihu.com/question/example8",
+      heat: 2109876,
+      risingIndex: "热度上升",
+      excerpt: "GPT-5 在推理能力和多模态方面有了显著提升...",
+      metrics: { followers: 56000, answers: 892, viewCount: 4500000 }
+    },
+    {
+      rank: 9,
+      title: "一线城市的房价还会继续下跌吗？",
+      url: "https://www.zhihu.com/question/example9",
+      heat: 1098765,
+      risingIndex: "",
+      excerpt: "房地产市场持续调整，购房者和投资者都在观望...",
+      metrics: { followers: 67800, answers: 1023, viewCount: 5600000 }
+    },
+    {
+      rank: 10,
+      title: "低空经济概念股还能追吗？",
+      url: "https://www.zhihu.com/question/example10",
+      heat: 987654,
+      risingIndex: "新上榜",
+      excerpt: "低空经济政策频出，相关产业链迎来发展机遇...",
+      metrics: { followers: 8900, answers: 123, viewCount: 450000 }
+    }
+  ],
+  total: 10,
+  filtered: 10,
+  keyword: null,
+  source: "Demo",
+  updatedAt: new Date().toISOString()
+};
+
 window.ZHIHU_RADAR_SAMPLE = {
   keyword: "AI Agent",
   summary:

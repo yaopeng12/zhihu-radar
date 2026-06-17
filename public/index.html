@@ -3,163 +3,163 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta
-      name="description"
-      content="知乎洞察雷达：基于知乎开放 API 的关键词研究、趋势洞察和内容选题工具。"
-    />
+    <meta name="description" content="知乎洞察雷达：基于知乎开放 API 的关键词研究、趋势洞察和内容选题工具。" />
     <title>知乎洞察雷达</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="./assets/styles.css" />
   </head>
   <body>
     <main class="app-shell">
-      <section class="workspace" aria-label="知乎洞察雷达工作台">
+      <section class="workspace">
         <aside class="sidebar">
           <div class="brand">
             <span class="brand-mark">知</span>
             <div>
               <h1>知乎洞察雷达</h1>
-              <p>知识发现 / 选题分析 / 趋势监控</p>
+              <p>ZHIHU INTELLIGENCE</p>
             </div>
           </div>
 
-          <form class="search-panel" id="radar-form">
-            <label for="keyword">关键词</label>
-            <div class="input-row">
-              <input
-                id="keyword"
-                name="keyword"
-                type="search"
-                value="AI Agent"
-                placeholder="例如：AI Agent、考研、新能源车"
-                autocomplete="off"
-              />
-              <button type="submit" title="分析关键词">分析</button>
-            </div>
-
-            <label for="api-endpoint">搜索接口</label>
-            <input
-              id="api-endpoint"
-              name="endpoint"
-              type="text"
-              value="/api/search"
-              placeholder="/api/search"
-            />
-
-            <label for="api-key">知乎 API Key</label>
-            <input
-              id="api-key"
-              name="apiKey"
-              type="password"
-              placeholder="可选：仅用于当前浏览器请求"
-            />
-            <p class="field-note">
-              Vercel 部署时建议在环境变量里保存 API Key；临时体验也可以在这里填写。
-            </p>
-          </form>
-
-          <nav class="nav-stack" aria-label="页面导航">
-            <a href="#overview">总览</a>
-            <a href="#questions">问题池</a>
-            <a href="#ideas">选题建议</a>
-            <a href="#export">导出</a>
-          </nav>
+          <div class="mode-switcher">
+            <button class="mode-btn active" data-mode="hot">实时热榜</button>
+            <button class="mode-btn" data-mode="radar">洞察雷达</button>
+          </div>
         </aside>
 
-        <section class="content-area">
-          <header class="topbar">
-            <div>
-              <p class="eyebrow">Open Source Zhihu Intelligence</p>
-              <h2 id="page-title">AI Agent 趋势洞察</h2>
-            </div>
-            <div class="actions">
-              <button id="refresh-btn" type="button" title="刷新当前分析">刷新</button>
-              <button id="copy-btn" type="button" title="复制 Markdown 报告">复制报告</button>
-            </div>
-          </header>
+        <div class="main-wrapper">
+          <section class="content-area">
+            <!-- Radar View -->
+            <div class="view-panel" id="view-radar">
+              <header class="topbar">
+                <div>
+                  <p class="eyebrow">Zhihu Intelligence</p>
+                  <h2 id="page-title">洞察雷达</h2>
+                </div>
+                <form class="search-inline" id="radar-form">
+                  <input id="keyword" type="search" value="AI Agent" placeholder="输入关键词" autocomplete="off" />
+                  <button type="submit">分析</button>
+                  <button id="analyze-btn" type="button" class="btn-analyze">AI 分析</button>
+                  <button id="copy-btn" type="button" class="btn-copy">复制报告</button>
+                </form>
+              </header>
 
-          <section class="metric-grid" id="overview">
-            <article class="metric">
-              <span>相关问题</span>
-              <strong id="metric-questions">0</strong>
-            </article>
-            <article class="metric">
-              <span>总关注</span>
-              <strong id="metric-followers">0</strong>
-            </article>
-            <article class="metric">
-              <span>总回答</span>
-              <strong id="metric-answers">0</strong>
-            </article>
-            <article class="metric">
-              <span>内容机会</span>
-              <strong id="metric-opportunities">0</strong>
-            </article>
-          </section>
-
-          <section class="insight-layout">
-            <article class="panel summary-panel">
-              <div class="panel-heading">
-                <h3>趋势摘要</h3>
-                <span id="source-badge">Demo</span>
+              <div class="empty-state" id="empty-state">
+                <div class="empty-icon">📡</div>
+                <h3>输入关键词开始探索</h3>
+                <p>输入关键词，点击「分析」获取知乎趋势洞察、用户痛点和选题建议</p>
               </div>
-              <p id="summary"></p>
-              <div class="tag-cloud" id="tag-cloud"></div>
-            </article>
 
-            <article class="panel">
-              <div class="panel-heading">
-                <h3>用户痛点</h3>
+              <div id="results-container" style="display: none;">
+                <section class="metric-grid reveal-section" id="overview">
+                  <article class="metric">
+                    <span>相关问题</span>
+                    <strong id="metric-questions">0</strong>
+                  </article>
+                  <article class="metric">
+                    <span>总关注</span>
+                    <strong id="metric-followers">0</strong>
+                  </article>
+                  <article class="metric">
+                    <span>总回答</span>
+                    <strong id="metric-answers">0</strong>
+                  </article>
+                  <article class="metric">
+                    <span>内容机会</span>
+                    <strong id="metric-opportunities">0</strong>
+                  </article>
+                </section>
+
+                <section class="insight-layout reveal-section">
+                  <article class="panel summary-panel">
+                    <div class="panel-heading">
+                      <h3>趋势摘要</h3>
+                      <span id="source-badge">-</span>
+                    </div>
+                    <p id="summary"></p>
+                    <div class="tag-cloud" id="tag-cloud"></div>
+                  </article>
+                  <article class="panel">
+                    <div class="panel-heading">
+                      <h3>用户痛点</h3>
+                    </div>
+                    <ul class="pain-list" id="pain-list"></ul>
+                  </article>
+                </section>
+
+                <section class="panel reveal-section" id="ideas">
+                  <div class="panel-heading">
+                    <h3>选题建议</h3>
+                  </div>
+                  <div class="idea-grid" id="idea-grid"></div>
+                </section>
+
+                <section class="panel reveal-section" id="questions">
+                  <div class="panel-heading">
+                    <h3>问题池</h3>
+                    <span id="updated-at"></span>
+                  </div>
+                  <div class="table-wrap">
+                    <table>
+                      <thead>
+                        <tr><th>问题</th><th>关注</th><th>回答</th><th>机会</th></tr>
+                      </thead>
+                      <tbody id="question-table"></tbody>
+                    </table>
+                  </div>
+                </section>
               </div>
-              <ul class="pain-list" id="pain-list"></ul>
-            </article>
+            </div>
+
+            <!-- Hot List View -->
+            <div class="view-panel active" id="view-hot">
+              <header class="topbar">
+                <div>
+                  <p class="eyebrow">Real-time Hot List</p>
+                  <h2>实时热榜</h2>
+                </div>
+              </header>
+
+              <div class="hot-controls">
+                <div class="hot-filter-row">
+                  <input id="hot-keyword" type="search" placeholder="关键词过滤" autocomplete="off" />
+                  <button id="hot-filter-btn" type="button">筛选</button>
+                </div>
+              </div>
+
+              <section class="metric-grid">
+                <article class="metric"><span>热榜总数</span><strong id="hot-total">0</strong></article>
+                <article class="metric"><span>筛选结果</span><strong id="hot-filtered">0</strong></article>
+                <article class="metric"><span>数据来源</span><strong id="hot-source" class="metric-text">-</strong></article>
+                <article class="metric"><span>更新时间</span><strong id="hot-updated" class="metric-text">-</strong></article>
+              </section>
+
+              <section class="panel">
+                <div class="panel-heading">
+                  <h3>热榜 TOP 50</h3>
+                  <span id="hot-badge">-</span>
+                </div>
+                <div class="table-wrap">
+                  <table>
+                    <thead>
+                      <tr><th class="col-rank">排名</th><th>话题</th></tr>
+                    </thead>
+                    <tbody id="hot-table"></tbody>
+                  </table>
+                </div>
+              </section>
+            </div>
           </section>
 
-          <section class="panel" id="questions">
-            <div class="panel-heading">
-              <h3>问题池</h3>
-              <span id="updated-at"></span>
-            </div>
-            <div class="table-wrap">
-              <table>
-                <thead>
-                  <tr>
-                    <th>问题</th>
-                    <th>关注</th>
-                    <th>回答</th>
-                    <th>机会</th>
-                  </tr>
-                </thead>
-                <tbody id="question-table"></tbody>
-              </table>
-            </div>
-          </section>
-
-          <section class="panel" id="ideas">
-            <div class="panel-heading">
-              <h3>选题建议</h3>
-            </div>
-            <div class="idea-grid" id="idea-grid"></div>
-          </section>
-
-          <section class="panel export-panel" id="export">
+          <footer class="export-panel">
             <div>
-              <h3>开源部署</h3>
-              <p>
-                本项目可以直接用 GitHub Pages 作为在线演示，也可以接入服务端代理、数据库和
-                LLM 生成真实分析报告。
-              </p>
+              <h3>开源项目</h3>
+              <p>基于知乎开放 API 的内容选题工具</p>
             </div>
-            <a
-              class="repo-link"
-              href="https://github.com/yaopeng12/zhihu-radar"
-              target="_blank"
-              rel="noreferrer"
-              title="打开 GitHub"
-            >
-              GitHub
-            </a>
-          </section>
-        </section>
+            <a class="repo-link" href="https://github.com/yaopeng12/zhihu-radar" target="_blank" rel="noreferrer">GitHub</a>
+          </footer>
+        </div>
       </section>
     </main>
 

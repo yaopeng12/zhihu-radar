@@ -3,6 +3,8 @@ import { existsSync, readFileSync } from "node:fs";
 import { readFile } from "node:fs/promises";
 import { extname, join, normalize } from "node:path";
 import searchHandler from "./api/search.js";
+import hotHandler from "./api/hot.js";
+import analyzeHandler from "./api/analyze.js";
 
 const root = process.cwd();
 const publicRoot = join(root, "public");
@@ -23,7 +25,15 @@ createServer(async (request, response) => {
   const url = new URL(request.url, `http://${request.headers.host}`);
 
   if (url.pathname === "/api/search") {
-    return runApiHandler(request, response, url);
+    return runApiHandler(request, response, url, searchHandler);
+  }
+
+  if (url.pathname === "/api/hot") {
+    return runApiHandler(request, response, url, hotHandler);
+  }
+
+  if (url.pathname === "/api/analyze") {
+    return runAnalyzeHandler(request, response, url);
   }
 
   const pathname = url.pathname === "/" ? "/index.html" : url.pathname;
@@ -44,7 +54,7 @@ createServer(async (request, response) => {
   console.log(`Zhihu Radar listening on http://localhost:${port}`);
 });
 
-function runApiHandler(request, response, url) {
+function runApiHandler(request, response, url, handler) {
   const query = Object.fromEntries(url.searchParams.entries());
   const apiRequest = {
     method: request.method,
@@ -66,7 +76,44 @@ function runApiHandler(request, response, url) {
     }
   };
 
-  return searchHandler(apiRequest, apiResponse);
+  return handler(apiRequest, apiResponse);
+}
+
+async function runAnalyzeHandler(request, response, url) {
+  let body = "";
+  for await (const chunk of request) {
+    body += chunk;
+  }
+
+  let parsed = {};
+  try {
+    parsed = JSON.parse(body);
+  } catch {
+    // ignore
+  }
+
+  const apiRequest = {
+    method: request.method,
+    query: Object.fromEntries(url.searchParams.entries()),
+    headers: request.headers,
+    body: parsed
+  };
+
+  const apiResponse = {
+    statusCode: 200,
+    status(code) {
+      this.statusCode = code;
+      return this;
+    },
+    json(payload) {
+      response.writeHead(this.statusCode, {
+        "content-type": "application/json; charset=utf-8"
+      });
+      response.end(JSON.stringify(payload));
+    }
+  };
+
+  return analyzeHandler(apiRequest, apiResponse);
 }
 
 function loadLocalEnv(filename) {

@@ -3,6 +3,12 @@
   "functions": {
     "api/search.js": {
       "maxDuration": 15
+    },
+    "api/hot.js": {
+      "maxDuration": 15
+    },
+    "api/analyze.js": {
+      "maxDuration": 30
     }
   },
   "rewrites": [

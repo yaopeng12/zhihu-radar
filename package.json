@@ -6,6 +6,6 @@
   "scripts": {
     "dev": "vercel dev",
     "start": "node server.js",
-    "check": "node --check api/search.js && node --check server.js && node --check public/assets/app.js && node --check public/assets/sample-data.js"
+    "check": "node --check api/search.js && node --check api/hot.js && node --check api/analyze.js && node --check server.js && node --check public/assets/app.js && node --check public/assets/sample-data.js"
   }
 }
