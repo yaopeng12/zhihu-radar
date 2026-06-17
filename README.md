@@ -77,7 +77,7 @@ https://your-project.vercel.app/api/search?q=AI%20Agent
 
 ## 本地运行
 
-如果只看 UI，可以直接打开 `index.html`。如果要测试真实 `/api/search` 流程，请使用 Node 服务：
+如果只看 UI，可以直接打开 `public/index.html`。如果要测试真实 `/api/search` 流程，请使用 Node 服务：
 
 ```bash
 node server.js
@@ -147,13 +147,14 @@ http://localhost:8080
 
 ```text
 .
-├── index.html
 ├── api
 │   └── search.js
-├── assets
-│   ├── app.js
-│   ├── sample-data.js
-│   └── styles.css
+├── public
+│   ├── index.html
+│   └── assets
+│       ├── app.js
+│       ├── sample-data.js
+│       └── styles.css
 ├── .github
 │   └── workflows
 │       └── pages.yml
