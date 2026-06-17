@@ -1,4 +1,5 @@
 const DEFAULT_TIMEOUT_MS = 12000;
+const DEFAULT_GLOBAL_SEARCH_URL = "https://developer.zhihu.com/api/v1/content/global_search";
 
 export default async function handler(request, response) {
   if (request.method !== "GET") {
@@ -15,6 +16,9 @@ export default async function handler(request, response) {
 
   const apiKey = request.headers["x-zhihu-api-key"] || process.env.ZHIHU_API_KEY;
   const searchUrl = process.env.ZHIHU_SEARCH_URL;
+  const globalSearchUrl = process.env.ZHIHU_GLOBAL_SEARCH_URL || DEFAULT_GLOBAL_SEARCH_URL;
+  const sort = String(request.query.sort || "hot");
+  const strategy = String(request.query.strategy || "hybrid");
 
   if (!searchUrl) {
     return response.status(501).json({
@@ -25,8 +29,8 @@ export default async function handler(request, response) {
   }
 
   try {
-    const upstream = await callZhihuSearch({ apiKey, keyword, searchUrl });
-    const report = buildReport(keyword, upstream);
+    const upstream = await callCandidateSearches({ apiKey, keyword, searchUrl, globalSearchUrl, strategy });
+    const report = buildReport(keyword, upstream, { sort, strategy });
     return response.status(200).json(report);
   } catch (error) {
     return response.status(error.statusCode || 502).json({
@@ -36,13 +40,42 @@ export default async function handler(request, response) {
   }
 }
 
-async function callZhihuSearch({ apiKey, keyword, searchUrl }) {
+async function callCandidateSearches({ apiKey, keyword, searchUrl, globalSearchUrl, strategy }) {
+  const requests = [
+    callZhihuSearch({ apiKey, keyword, searchUrl, count: 10, source: "zhihu_search" })
+  ];
+
+  if (strategy === "hybrid" && globalSearchUrl) {
+    requests.push(
+      callZhihuSearch({
+        apiKey,
+        keyword,
+        searchUrl: globalSearchUrl,
+        count: 20,
+        source: "global_search",
+        extraParams: { SearchDB: "all" }
+      })
+    );
+  }
+
+  const results = await Promise.allSettled(requests);
+  const fulfilled = results.filter((result) => result.status === "fulfilled").map((result) => result.value);
+  if (fulfilled.length) return fulfilled;
+
+  throw results.find((result) => result.status === "rejected")?.reason || new Error("知乎 API 请求失败");
+}
+
+async function callZhihuSearch({ apiKey, keyword, searchUrl, count = 10, source = "zhihu_search", extraParams = {} }) {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), DEFAULT_TIMEOUT_MS);
 
   try {
     const url = new URL(searchUrl);
     url.searchParams.set("Query", keyword);
+    url.searchParams.set("Count", String(count));
+    for (const [key, value] of Object.entries(extraParams)) {
+      url.searchParams.set(key, value);
+    }
     const result = await fetch(url, {
       method: "GET",
       signal: controller.signal,
@@ -64,7 +97,7 @@ async function callZhihuSearch({ apiKey, keyword, searchUrl }) {
       throw error;
     }
     assertBusinessSuccess(body);
-    return body;
+    return { source, body };
   } finally {
     clearTimeout(timer);
   }
@@ -87,14 +120,23 @@ function parseJsonResponse(text, contentType, searchUrl) {
   }
 }
 
-function buildReport(keyword, upstream) {
-  const questions = extractItems(unwrapPayload(upstream)).map((item) => normalizeItem(item, keyword));
+function buildReport(keyword, upstream, options = {}) {
+  const upstreamList = Array.isArray(upstream) ? upstream : [upstream];
+  const questions = dedupeItems(
+    upstreamList.flatMap((entry) =>
+      extractItems(unwrapPayload(entry.body || entry)).map((item) => normalizeItem(item, keyword, entry.source))
+    )
+  );
+  if (options.sort === "hot") {
+    questions.sort((a, b) => b.heatScore - a.heatScore);
+  }
   const tags = extractTags(keyword, questions);
   const highOpportunityCount = questions.filter((item) => item.opportunity === "高").length;
 
   return {
     keyword,
-    source: "Zhihu API",
+    source: options.sort === "hot" ? "Zhihu API · 热度优先" : "Zhihu API",
+    strategy: options.strategy || "single",
     updatedAt: new Date().toISOString(),
     summary: summarize(keyword, questions),
     tags,
@@ -103,6 +145,16 @@ function buildReport(keyword, upstream) {
     ideas: buildIdeas(keyword, questions, highOpportunityCount),
     rawCount: questions.length
   };
+}
+
+function dedupeItems(items) {
+  const seen = new Set();
+  return items.filter((item) => {
+    const key = item.url || item.title;
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
 }
 
 function extractItems(payload) {
@@ -142,7 +194,7 @@ function assertBusinessSuccess(payload) {
   throw error;
 }
 
-function normalizeItem(item, keyword) {
+function normalizeItem(item, keyword, source) {
   const title =
     item.title ||
     item.Title ||
@@ -167,12 +219,17 @@ function normalizeItem(item, keyword) {
   const answers = Number(
     item.answers || item.answer_count || item.comment_count || item.CommentCount || item.comment_count || item.reply_count || 0
   );
+  const rankingScore = Number(item.RankingScore || item.ranking_score || item.score || 0);
+  const heatScore = rankingScore * 1000 + followers * 2 + answers * 6;
 
   return {
     title: stripHtml(title),
     url,
     followers,
     answers,
+    rankingScore,
+    heatScore,
+    source,
     opportunity: scoreOpportunity(followers, answers),
     excerpt: stripHtml(item.excerpt || item.summary || item.description || item.ContentText || item.content || "")
   };
