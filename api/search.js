@@ -53,7 +53,8 @@ async function callZhihuSearch({ apiKey, keyword, searchUrl }) {
     });
 
     const text = await result.text();
-    const body = text ? JSON.parse(text) : {};
+    const contentType = result.headers.get("content-type") || "";
+    const body = parseJsonResponse(text, contentType, searchUrl);
     if (!result.ok) {
       const message = body.message || body.error || `知乎 API 返回 ${result.status}`;
       const error = new Error(message);
@@ -63,6 +64,23 @@ async function callZhihuSearch({ apiKey, keyword, searchUrl }) {
     return body;
   } finally {
     clearTimeout(timer);
+  }
+}
+
+function parseJsonResponse(text, contentType, searchUrl) {
+  if (!text) return {};
+
+  if (!contentType.includes("json")) {
+    const url = new URL(searchUrl);
+    throw new Error(
+      `ZHIHU_SEARCH_URL 返回的不是 JSON，而是 ${contentType || "未知内容类型"}。当前地址 ${url.origin}${url.pathname} 可能是网页、登录页或文档页，请换成真实的知乎搜索 API 端点。`
+    );
+  }
+
+  try {
+    return JSON.parse(text);
+  } catch {
+    throw new Error("知乎 API 返回了无法解析的 JSON，请检查接口响应格式。");
   }
 }
 
