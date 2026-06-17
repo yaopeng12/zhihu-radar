@@ -2,11 +2,16 @@
   const form = document.querySelector("#radar-form");
   const keywordInput = document.querySelector("#keyword");
   const endpointInput = document.querySelector("#api-endpoint");
+  const apiKeyInput = document.querySelector("#api-key");
   const refreshBtn = document.querySelector("#refresh-btn");
   const copyBtn = document.querySelector("#copy-btn");
   const toast = document.querySelector("#toast");
 
   let currentReport = normalizeReport(window.ZHIHU_RADAR_SAMPLE);
+  const savedApiKey = window.localStorage.getItem("zhihu-radar-api-key");
+  if (savedApiKey) {
+    apiKeyInput.value = savedApiKey;
+  }
 
   function normalizeReport(raw) {
     const questions = Array.isArray(raw.questions) ? raw.questions : [];
@@ -24,36 +29,40 @@
 
   async function loadReport() {
     const keyword = keywordInput.value.trim() || "AI Agent";
-    const endpoint = endpointInput.value.trim();
+    const endpoint = endpointInput.value.trim() || "/api/search";
+    const apiKey = apiKeyInput.value.trim();
+    window.localStorage.setItem("zhihu-radar-api-key", apiKey);
     setLoading(true);
 
     try {
-      if (!endpoint) {
-        currentReport = normalizeReport({
-          ...window.ZHIHU_RADAR_SAMPLE,
-          keyword,
-          source: "Demo"
-        });
-      } else {
-        const url = new URL(endpoint);
-        url.searchParams.set("q", keyword);
-        const response = await fetch(url.toString(), {
-          headers: { accept: "application/json" }
-        });
-        if (!response.ok) {
-          throw new Error(`API returned ${response.status}`);
+      const url = new URL(endpoint, window.location.href);
+      url.searchParams.set("q", keyword);
+      const response = await fetch(url.toString(), {
+        headers: {
+          accept: "application/json",
+          ...(apiKey ? { "x-zhihu-api-key": apiKey } : {})
         }
-        currentReport = normalizeReport({
-          ...(await response.json()),
-          keyword,
-          source: "API"
-        });
+      });
+      const payload = await response.json().catch(() => ({}));
+      if (!response.ok || payload.error) {
+        throw new Error(payload.message || payload.error || `API returned ${response.status}`);
       }
+      currentReport = normalizeReport({
+        ...payload,
+        keyword,
+        source: payload.source || "Zhihu API"
+      });
       render(currentReport);
       showToast("分析已更新");
     } catch (error) {
       console.error(error);
-      showToast("API 请求失败，已保留当前报告");
+      currentReport = normalizeReport({
+        ...window.ZHIHU_RADAR_SAMPLE,
+        keyword,
+        source: "Demo"
+      });
+      render(currentReport);
+      showToast(`真实 API 未连通：${error.message}`);
     } finally {
       setLoading(false);
     }
