@@ -42,12 +42,14 @@ async function callZhihuSearch({ apiKey, keyword, searchUrl }) {
 
   try {
     const url = new URL(searchUrl);
-    url.searchParams.set("q", keyword);
+    url.searchParams.set("Query", keyword);
     const result = await fetch(url, {
       method: "GET",
       signal: controller.signal,
       headers: {
         accept: "application/json",
+        "content-type": "application/json",
+        "x-request-timestamp": Math.floor(Date.now() / 1000).toString(),
         ...(apiKey ? { authorization: `Bearer ${apiKey}` } : {})
       }
     });
@@ -112,7 +114,10 @@ function extractItems(payload) {
     payload.list,
     payload.data?.items,
     payload.data?.results,
-    payload.data?.list
+    payload.data?.list,
+    payload.Items,
+    payload.Results,
+    payload.List
   ];
   return candidates.find(Array.isArray) || [];
 }
@@ -140,14 +145,28 @@ function assertBusinessSuccess(payload) {
 function normalizeItem(item, keyword) {
   const title =
     item.title ||
+    item.Title ||
     item.question?.title ||
     item.name ||
+    item.Name ||
     item.text ||
+    item.Text ||
     item.content?.title ||
     `${keyword} 相关内容`;
-  const url = item.url || item.link || item.question?.url || item.content?.url || "https://www.zhihu.com/search";
-  const followers = Number(item.followers || item.follower_count || item.follow_count || item.score || 0);
-  const answers = Number(item.answers || item.answer_count || item.comment_count || item.reply_count || 0);
+  const url =
+    item.url ||
+    item.Url ||
+    item.link ||
+    item.Link ||
+    item.question?.url ||
+    item.content?.url ||
+    "https://www.zhihu.com/search";
+  const followers = Number(
+    item.followers || item.follower_count || item.follow_count || item.VoteUpCount || item.vote_up_count || item.score || 0
+  );
+  const answers = Number(
+    item.answers || item.answer_count || item.comment_count || item.CommentCount || item.comment_count || item.reply_count || 0
+  );
 
   return {
     title: stripHtml(title),
@@ -155,7 +174,7 @@ function normalizeItem(item, keyword) {
     followers,
     answers,
     opportunity: scoreOpportunity(followers, answers),
-    excerpt: stripHtml(item.excerpt || item.summary || item.description || item.content || "")
+    excerpt: stripHtml(item.excerpt || item.summary || item.description || item.ContentText || item.content || "")
   };
 }
 
