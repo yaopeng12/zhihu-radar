@@ -1,4 +1,5 @@
 import { createServer } from "node:http";
+import { existsSync, readFileSync } from "node:fs";
 import { readFile } from "node:fs/promises";
 import { extname, join, normalize } from "node:path";
 import searchHandler from "./api/search.js";
@@ -6,6 +7,9 @@ import searchHandler from "./api/search.js";
 const root = process.cwd();
 const publicRoot = join(root, "public");
 const port = Number(process.env.PORT || 8080);
+
+loadLocalEnv(".env.local");
+loadLocalEnv(".env");
 
 const mimeTypes = {
   ".html": "text/html; charset=utf-8",
@@ -63,4 +67,24 @@ function runApiHandler(request, response, url) {
   };
 
   return searchHandler(apiRequest, apiResponse);
+}
+
+function loadLocalEnv(filename) {
+  const envPath = join(root, filename);
+  if (!existsSync(envPath)) return;
+
+  const lines = readFileSync(envPath, "utf8").split(/\r?\n/);
+  for (const line of lines) {
+    const trimmed = line.trim();
+    if (!trimmed || trimmed.startsWith("#")) continue;
+
+    const separatorIndex = trimmed.indexOf("=");
+    if (separatorIndex === -1) continue;
+
+    const key = trimmed.slice(0, separatorIndex).trim();
+    const rawValue = trimmed.slice(separatorIndex + 1).trim();
+    if (!key || process.env[key] !== undefined) continue;
+
+    process.env[key] = rawValue.replace(/^['"]|['"]$/g, "");
+  }
 }
