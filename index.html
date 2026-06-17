@@ -36,15 +36,24 @@
               <button type="submit" title="分析关键词">分析</button>
             </div>
 
-            <label for="api-endpoint">知乎 API 代理端点</label>
+            <label for="api-endpoint">搜索接口</label>
             <input
               id="api-endpoint"
               name="endpoint"
-              type="url"
-              placeholder="https://your-api.example.com/search"
+              type="text"
+              value="/api/search"
+              placeholder="/api/search"
+            />
+
+            <label for="api-key">知乎 API Key</label>
+            <input
+              id="api-key"
+              name="apiKey"
+              type="password"
+              placeholder="可选：仅用于当前浏览器请求"
             />
             <p class="field-note">
-              留空时使用演示数据。真实部署建议通过服务端代理保存 API Key。
+              Vercel 部署时建议在环境变量里保存 API Key；临时体验也可以在这里填写。
             </p>
           </form>
 
