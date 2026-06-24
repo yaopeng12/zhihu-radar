@@ -385,6 +385,9 @@
         return;
       }
 
+      // Store shots for retry functionality
+      window._lastShots = shots;
+
       // Render article with illustration placeholders
       illustrationLoading.style.display = "none";
       generateBtn.innerHTML = '<span class="spinner"></span> 生成配图中...';
@@ -392,45 +395,58 @@
       const container = document.getElementById("shots-container");
       container.innerHTML = renderArticle(content, data.summary, shots);
 
-      // Step 2: Generate illustrations in parallel
+      // Step 2: Generate illustrations with retry
       const imageSlots = container.querySelectorAll(".article-illustration[data-slot]");
       const generatePromises = shots.map(async (shot, i) => {
         const slot = imageSlots[i];
         if (!slot) return false;
 
-        try {
-          const res = await fetch("/api/illustration", {
-            method: "POST",
-            headers: { "content-type": "application/json" },
-            body: JSON.stringify({ action: "generate", prompt: shot.prompt })
-          });
+        const maxRetries = 2;
+        for (let attempt = 0; attempt <= maxRetries; attempt++) {
+          try {
+            const res = await fetch("/api/illustration", {
+              method: "POST",
+              headers: { "content-type": "application/json" },
+              body: JSON.stringify({ action: "generate", prompt: shot.prompt })
+            });
 
-          const result = await res.json();
-          if (result.illustrationUrl) {
-            slot.innerHTML = `
-              <img src="${result.illustrationUrl}" alt="${esc(shot.topic)}" class="article-illustration-img" />
-              <div class="article-illustration-caption">
-                <span class="caption-topic">${esc(shot.topic)}</span>
-                <span class="caption-meaning">${esc(shot.meaning || '')}</span>
-              </div>
-              <div class="article-illustration-actions">
-                <button class="btn btn-xs" onclick="downloadArticleImg(this, '${esc(shot.topic)}')">下载</button>
-                <button class="btn btn-xs btn-ghost" onclick="togglePrompt(this)">提示词</button>
-                <div class="prompt-popover" style="display:none">${esc(shot.prompt || '')}</div>
-              </div>
-            `;
-            slot.classList.remove("loading");
-            return true;
-          } else {
-            slot.innerHTML = `<p class="img-error">配图生成失败</p>`;
-            slot.classList.remove("loading");
-            return false;
+            const result = await res.json();
+            if (result.illustrationUrl) {
+              slot.innerHTML = `
+                <img src="${result.illustrationUrl}" alt="${esc(shot.topic)}" class="article-illustration-img" />
+                <div class="article-illustration-caption">
+                  <span class="caption-topic">${esc(shot.topic)}</span>
+                  <span class="caption-meaning">${esc(shot.meaning || '')}</span>
+                </div>
+                <div class="article-illustration-actions">
+                  <button class="btn btn-xs" onclick="downloadArticleImg(this, '${esc(shot.topic)}')">下载</button>
+                  <button class="btn btn-xs btn-ghost" onclick="togglePrompt(this)">提示词</button>
+                  <div class="prompt-popover" style="display:none">${esc(shot.prompt || '')}</div>
+                </div>
+              `;
+              slot.classList.remove("loading");
+              return true;
+            }
+
+            // If no image and last attempt, show error
+            if (attempt === maxRetries) {
+              slot.innerHTML = `<p class="img-error">配图生成失败 <button class="btn btn-xs" onclick="retryImage(this, ${i})">重试</button></p>`;
+              slot.classList.remove("loading");
+              return false;
+            }
+
+            // Wait before retry
+            await new Promise(r => setTimeout(r, 2000));
+          } catch (err) {
+            if (attempt === maxRetries) {
+              slot.innerHTML = `<p class="img-error">生成失败：${err.message} <button class="btn btn-xs" onclick="retryImage(this, ${i})">重试</button></p>`;
+              slot.classList.remove("loading");
+              return false;
+            }
+            await new Promise(r => setTimeout(r, 2000));
           }
-        } catch (err) {
-          slot.innerHTML = `<p class="img-error">生成失败：${err.message}</p>`;
-          slot.classList.remove("loading");
-          return false;
         }
+        return false;
       });
 
       const results = await Promise.all(generatePromises);
@@ -511,6 +527,48 @@
     if (popover) {
       popover.style.display = popover.style.display === "none" ? "block" : "none";
     }
+  };
+
+  // Retry image generation
+  window.retryImage = async function(btn, shotIndex) {
+    const slot = btn.closest(".article-illustration");
+    if (!slot || !window._lastShots) return;
+
+    const shot = window._lastShots[shotIndex];
+    if (!shot) return;
+
+    slot.innerHTML = `<div class="illustration-placeholder"><div class="spinner-lg"></div><p>重新生成中...</p></div>`;
+    slot.classList.add("loading");
+
+    try {
+      const res = await fetch("/api/illustration", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ action: "generate", prompt: shot.prompt })
+      });
+
+      const result = await res.json();
+      if (result.illustrationUrl) {
+        slot.innerHTML = `
+          <img src="${result.illustrationUrl}" alt="${esc(shot.topic)}" class="article-illustration-img" />
+          <div class="article-illustration-caption">
+            <span class="caption-topic">${esc(shot.topic)}</span>
+            <span class="caption-meaning">${esc(shot.meaning || '')}</span>
+          </div>
+          <div class="article-illustration-actions">
+            <button class="btn btn-xs" onclick="downloadArticleImg(this, '${esc(shot.topic)}')">下载</button>
+            <button class="btn btn-xs btn-ghost" onclick="togglePrompt(this)">提示词</button>
+            <div class="prompt-popover" style="display:none">${esc(shot.prompt || '')}</div>
+          </div>
+        `;
+      } else {
+        slot.innerHTML = `<p class="img-error">配图生成失败 <button class="btn btn-xs" onclick="retryImage(this, ${shotIndex})">重试</button></p>`;
+      }
+    } catch (err) {
+      slot.innerHTML = `<p class="img-error">生成失败：${err.message} <button class="btn btn-xs" onclick="retryImage(this, ${shotIndex})">重试</button></p>`;
+    }
+
+    slot.classList.remove("loading");
   };
 
   // Copy text helper

@@ -334,63 +334,79 @@ Constraints:
 One image explains only one core structure. Do not write a title in the top-left corner. Do not write the structure type on the image. Do not make it a formal diagram, course slide, or dense explainer. It should be clear but not instructional, interesting but not childish, strange but clean.`;
 }
 
-// Generate illustration using NVIDIA FLUX.1-dev model
-async function generateIllustration(apiKey, prompt) {
+// Generate illustration using NVIDIA FLUX.1-dev model (with retry)
+async function generateIllustration(apiKey, prompt, retries = 2) {
   const endpoint = process.env.NVIDIA_FLUX_ENDPOINT || "https://ai.api.nvidia.com/v1/genai/black-forest-labs/flux.1-dev";
 
-  const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), DEFAULT_TIMEOUT_MS);
-
-  try {
-    const result = await fetch(endpoint, {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-        authorization: `Bearer ${apiKey}`,
-        accept: "application/json"
-      },
-      body: JSON.stringify({
-        prompt: prompt,
-        cfg_scale: 3.5,
-        height: 1024,
-        width: 1024,
-        steps: 20,
-        seed: 0
-      }),
-      signal: controller.signal
-    });
-
-    clearTimeout(timeout);
-
-    if (!result.ok) {
-      const errorText = await result.text();
-      console.error("FLUX.1-dev error:", result.status, errorText);
-      return null;
+  for (let attempt = 0; attempt <= retries; attempt++) {
+    if (attempt > 0) {
+      console.log(`FLUX retry ${attempt}/${retries}...`);
+      await new Promise(r => setTimeout(r, 2000)); // Wait 2s before retry
     }
 
-    const data = await result.json();
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), DEFAULT_TIMEOUT_MS);
 
-    if (data.artifacts?.[0]?.base64) {
-      return `data:image/png;base64,${data.artifacts[0].base64}`;
-    }
-    if (data.images?.[0]) {
-      const img = data.images[0];
-      if (typeof img === "string") {
-        return img.startsWith("data:") ? img : `data:image/png;base64,${img}`;
+    try {
+      const result = await fetch(endpoint, {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+          authorization: `Bearer ${apiKey}`,
+          accept: "application/json"
+        },
+        body: JSON.stringify({
+          prompt: prompt,
+          cfg_scale: 3.5,
+          height: 1024,
+          width: 1024,
+          steps: 20,
+          seed: Math.floor(Math.random() * 1000000) // Random seed for variety
+        }),
+        signal: controller.signal
+      });
+
+      clearTimeout(timeout);
+
+      if (!result.ok) {
+        const errorText = await result.text();
+        console.error(`FLUX.1-dev error (attempt ${attempt + 1}):`, result.status, errorText.slice(0, 100));
+        if (result.status === 429) {
+          // Rate limited, wait longer before retry
+          await new Promise(r => setTimeout(r, 5000));
+          continue;
+        }
+        if (attempt === retries) return null;
+        continue;
       }
-      if (img.b64_json) return `data:image/png;base64,${img.b64_json}`;
-      if (img.url) return img.url;
-    }
 
-    console.log("Unrecognized FLUX response:", Object.keys(data));
-    return null;
-  } catch (error) {
-    clearTimeout(timeout);
-    if (error.name === "AbortError") {
-      console.error("FLUX.1-dev timeout after", DEFAULT_TIMEOUT_MS, "ms");
-      return null;
+      const data = await result.json();
+
+      if (data.artifacts?.[0]?.base64) {
+        return `data:image/png;base64,${data.artifacts[0].base64}`;
+      }
+      if (data.images?.[0]) {
+        const img = data.images[0];
+        if (typeof img === "string") {
+          return img.startsWith("data:") ? img : `data:image/png;base64,${img}`;
+        }
+        if (img.b64_json) return `data:image/png;base64,${img.b64_json}`;
+        if (img.url) return img.url;
+      }
+
+      console.log("Unrecognized FLUX response:", Object.keys(data));
+      if (attempt === retries) return null;
+    } catch (error) {
+      clearTimeout(timeout);
+      if (error.name === "AbortError") {
+        console.error(`FLUX.1-dev timeout (attempt ${attempt + 1})`);
+        if (attempt === retries) return null;
+        continue;
+      }
+      console.error(`FLUX.1-dev failed (attempt ${attempt + 1}):`, error.message);
+      if (attempt === retries) return null;
     }
-    console.error("FLUX.1-dev failed:", error.message);
-    return null;
   }
+
+  return null;
 }
