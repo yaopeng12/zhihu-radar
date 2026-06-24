@@ -1,3 +1,38 @@
+# Robots.txt for 知乎洞察雷达
+# https://zhihu.shoppilot.help
+
 User-agent: *
 Allow: /
-Sitemap: https://zhihu.shoppilot.help/sitemap.xml
+Allow: /resource/*
+Disallow: /api/
+
+# Sitemaps
+Sitemap: https://zhihu.shoppilot.help/api/sitemap
+
+# Crawl-delay for polite crawling
+Crawl-delay: 1
+
+# Allow all major search engines
+User-agent: Googlebot
+Allow: /
+
+User-agent: Baiduspider
+Allow: /
+
+User-agent: Sogou
+Allow: /
+
+User-agent: 360Spider
+Allow: /
+
+User-agent: YisouSpider
+Allow: /
+
+User-agent: bingbot
+Allow: /
+
+User-agent: DuckDuckBot
+Allow: /
+
+User-agent: YandexBot
+Allow: /

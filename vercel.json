@@ -9,12 +9,31 @@
     },
     "api/analyze.js": {
       "maxDuration": 30
+    },
+    "api/promotions.js": {
+      "maxDuration": 15
+    },
+    "api/resource.js": {
+      "maxDuration": 30
+    },
+    "api/sitemap.js": {
+      "maxDuration": 10
+    },
+    "api/promotions.js": {
+      "maxDuration": 15
+    },
+    "api/illustration.js": {
+      "maxDuration": 30
     }
   },
   "rewrites": [
     {
       "source": "/",
       "destination": "/index.html"
+    },
+    {
+      "source": "/resource/:id",
+      "destination": "/resource.html"
     }
   ],
   "headers": [
@@ -32,6 +51,18 @@
         {
           "key": "Referrer-Policy",
           "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "X-Robots-Tag",
+          "value": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
+        },
+        {
+          "key": "X-UA-Compatible",
+          "value": "IE=edge"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=()"
         }
       ]
     },
@@ -45,11 +76,41 @@
       ]
     },
     {
-      "source": "/sitemap.xml",
+      "source": "/api/sitemap",
       "headers": [
         {
           "key": "Content-Type",
           "value": "application/xml"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=3600"
+        },
+        {
+          "key": "X-Robots-Tag",
+          "value": "index, follow"
+        }
+      ]
+    },
+    {
+      "source": "/robots.txt",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/plain"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=86400"
+        }
+      ]
+    },
+    {
+      "source": "/manifest.json",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "application/manifest+json"
         },
         {
           "key": "Cache-Control",

@@ -5,6 +5,10 @@ import { extname, join, normalize } from "node:path";
 import searchHandler from "./api/search.js";
 import hotHandler from "./api/hot.js";
 import analyzeHandler from "./api/analyze.js";
+import promotionsHandler from "./api/promotions.js";
+import resourceHandler from "./api/resource.js";
+import sitemapHandler from "./api/sitemap.js";
+import illustrationHandler from "./api/illustration.js";
 
 const root = process.cwd();
 const publicRoot = join(root, "public");
@@ -18,12 +22,14 @@ const mimeTypes = {
   ".js": "text/javascript; charset=utf-8",
   ".css": "text/css; charset=utf-8",
   ".json": "application/json; charset=utf-8",
-  ".txt": "text/plain; charset=utf-8"
+  ".txt": "text/plain; charset=utf-8",
+  ".xml": "application/xml; charset=utf-8"
 };
 
 createServer(async (request, response) => {
   const url = new URL(request.url, `http://${request.headers.host}`);
 
+  // API routes
   if (url.pathname === "/api/search") {
     return runApiHandler(request, response, url, searchHandler);
   }
@@ -36,6 +42,37 @@ createServer(async (request, response) => {
     return runAnalyzeHandler(request, response, url);
   }
 
+  if (url.pathname === "/api/promotions") {
+    return runPromotionsHandler(request, response, url);
+  }
+
+  if (url.pathname === "/api/resource") {
+    return runResourceHandler(request, response, url);
+  }
+
+  if (url.pathname === "/api/sitemap") {
+    return runApiHandler(request, response, url, sitemapHandler);
+  }
+
+  if (url.pathname === "/api/illustration") {
+    return runResourceHandler(request, response, url, illustrationHandler);
+  }
+
+  // Resource page route: /resource/:id
+  if (url.pathname.startsWith("/resource/")) {
+    const filePath = join(publicRoot, "resource.html");
+    try {
+      const content = await readFile(filePath);
+      response.writeHead(200, { "content-type": "text/html; charset=utf-8" });
+      response.end(content);
+    } catch {
+      response.writeHead(404, { "content-type": "text/plain; charset=utf-8" });
+      response.end("Not Found");
+    }
+    return;
+  }
+
+  // Static files
   const pathname = url.pathname === "/" ? "/index.html" : url.pathname;
   const safePath = normalize(pathname).replace(/^(\.\.[/\\])+/, "");
   const filePath = join(publicRoot, safePath);
@@ -79,6 +116,45 @@ function runApiHandler(request, response, url, handler) {
   return handler(apiRequest, apiResponse);
 }
 
+async function runPromotionsHandler(request, response, url) {
+  let body = "";
+  if (request.method === "POST" || request.method === "PUT") {
+    for await (const chunk of request) {
+      body += chunk;
+    }
+  }
+
+  let parsed = {};
+  try {
+    parsed = JSON.parse(body);
+  } catch {
+    // ignore
+  }
+
+  const apiRequest = {
+    method: request.method,
+    query: Object.fromEntries(url.searchParams.entries()),
+    headers: request.headers,
+    body: parsed
+  };
+
+  const apiResponse = {
+    statusCode: 200,
+    status(code) {
+      this.statusCode = code;
+      return this;
+    },
+    json(payload) {
+      response.writeHead(this.statusCode, {
+        "content-type": "application/json; charset=utf-8"
+      });
+      response.end(JSON.stringify(payload));
+    }
+  };
+
+  return promotionsHandler(apiRequest, apiResponse);
+}
+
 async function runAnalyzeHandler(request, response, url) {
   let body = "";
   for await (const chunk of request) {
@@ -114,6 +190,43 @@ async function runAnalyzeHandler(request, response, url) {
   };
 
   return analyzeHandler(apiRequest, apiResponse);
+}
+
+async function runResourceHandler(request, response, url, handler) {
+  let body = "";
+  for await (const chunk of request) {
+    body += chunk;
+  }
+
+  let parsed = {};
+  try {
+    parsed = JSON.parse(body);
+  } catch {
+    // ignore
+  }
+
+  const apiRequest = {
+    method: request.method,
+    query: Object.fromEntries(url.searchParams.entries()),
+    headers: request.headers,
+    body: parsed
+  };
+
+  const apiResponse = {
+    statusCode: 200,
+    status(code) {
+      this.statusCode = code;
+      return this;
+    },
+    json(payload) {
+      response.writeHead(this.statusCode, {
+        "content-type": "application/json; charset=utf-8"
+      });
+      response.end(JSON.stringify(payload));
+    }
+  };
+
+  return (handler || resourceHandler)(apiRequest, apiResponse);
 }
 
 function loadLocalEnv(filename) {

@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title id="meta-title">资源推荐 - 知乎洞察雷达</title>
+    <meta name="description" id="meta-desc" content="知乎洞察雷达生成的资源推荐页" />
+    <meta name="robots" content="index, follow" />
+    <meta name="theme-color" content="#1677ff" />
+
+    <!-- Open Graph (dynamically updated by JS) -->
+    <meta property="og:type" id="og-type" content="article" />
+    <meta property="og:site_name" content="知乎洞察雷达" />
+    <meta property="og:title" id="og-title" content="资源推荐 - 知乎洞察雷达" />
+    <meta property="og:description" id="og-desc" content="" />
+    <meta property="og:url" id="og-url" content="" />
+    <meta property="og:locale" content="zh_CN" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" id="tw-title" content="资源推荐 - 知乎洞察雷达" />
+    <meta name="twitter:description" id="tw-desc" content="" />
+
+    <!-- Canonical -->
+    <link rel="canonical" id="canonical" href="" />
+
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📡</text></svg>" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        --bg: #f5f5f5;
+        --panel: #fff;
+        --ink: #1a1a1a;
+        --muted: #666;
+        --line: #e8e8e8;
+        --primary: #1677ff;
+        --accent: #ff6a00;
+      }
+      * { box-sizing: border-box; margin: 0; }
+      body {
+        background: var(--bg);
+        color: var(--ink);
+        font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
+        line-height: 1.6;
+      }
+      .container { max-width: 720px; margin: 0 auto; padding: 32px 16px; }
+      .breadcrumb { font-size: 13px; color: var(--muted); margin-bottom: 20px; }
+      .breadcrumb a { color: var(--muted); text-decoration: none; }
+      .breadcrumb a:hover { color: var(--ink); }
+      h1 { font-size: 24px; font-weight: 700; margin-bottom: 8px; }
+      .desc { color: var(--muted); font-size: 14px; margin-bottom: 24px; }
+      .resource-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 24px; }
+      .resource-item {
+        display: flex; align-items: center; justify-content: space-between;
+        padding: 16px; background: var(--panel); border: 1px solid var(--line);
+        border-radius: 8px;
+      }
+      .resource-info h3 { font-size: 15px; font-weight: 600; margin-bottom: 2px; }
+      .resource-info p { font-size: 13px; color: var(--muted); }
+      .btn-download {
+        display: inline-flex; align-items: center; gap: 6px;
+        padding: 8px 16px; background: var(--accent); color: #fff;
+        border-radius: 6px; font-size: 13px; font-weight: 600;
+        text-decoration: none; white-space: nowrap;
+      }
+      .btn-download:hover { opacity: 0.9; }
+      .cta-box {
+        background: linear-gradient(135deg, #fff7ed, #ffedd5);
+        border: 2px solid var(--accent); border-radius: 12px;
+        padding: 24px; text-align: center; margin-bottom: 24px;
+      }
+      .cta-box h3 { font-size: 18px; margin-bottom: 8px; }
+      .cta-box p { color: var(--muted); font-size: 14px; margin-bottom: 16px; }
+      .btn-cta {
+        display: inline-block; padding: 12px 32px;
+        background: var(--accent); color: #fff; border-radius: 8px;
+        font-size: 16px; font-weight: 700; text-decoration: none;
+      }
+      .btn-cta:hover { opacity: 0.9; }
+      .floating-bar {
+        position: fixed; bottom: 0; left: 0; right: 0;
+        background: var(--panel); border-top: 1px solid var(--line);
+        padding: 12px 16px; transform: translateY(100%);
+        transition: transform 0.3s; z-index: 100;
+      }
+      .floating-bar.show { transform: translateY(0); }
+      .floating-inner {
+        max-width: 720px; margin: 0 auto;
+        display: flex; align-items: center; justify-content: space-between;
+      }
+      .floating-text { font-size: 14px; font-weight: 600; }
+      .btn-download {
+        display: inline-flex; align-items: center; gap: 6px;
+        padding: 10px 24px; background: var(--accent); color: #fff;
+        border-radius: 6px; font-weight: 600; text-decoration: none;
+      }
+      .btn-download:hover { opacity: 0.9; }
+      .stats { font-size: 12px; color: var(--muted); margin-bottom: 16px; }
+      footer {
+        margin-top: 40px; padding-top: 16px; border-top: 1px solid var(--line);
+        text-align: center; font-size: 12px; color: var(--muted);
+      }
+      footer a { color: var(--primary); }
+      @media (max-width: 640px) {
+        .container { padding: 20px 12px; padding-bottom: 80px; }
+        .floating-inner { flex-direction: column; gap: 8px; }
+        .btn-download { width: 100%; justify-content: center; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <nav class="breadcrumb">
+        <a href="/">知乎洞察雷达</a> › <span id="breadcrumb">资源推荐</span>
+      </nav>
+
+      <h1 id="title">加载中...</h1>
+      <p class="desc" id="desc"></p>
+      <p class="stats" id="stats"></p>
+
+      <div class="resource-list" id="resource-list"></div>
+
+      <div id="cta-section" style="display:none;">
+        <div style="text-align:center; padding:20px; background:#fff8f0; border:2px solid var(--accent); border-radius:12px;">
+          <h3 style="margin-bottom:8px;">💾 保存到网盘</h3>
+          <p style="color:var(--muted); font-size:14px; margin-bottom:16px;" id="cta-desc"></p>
+          <a class="btn-download" id="cta-btn" href="#" target="_blank" rel="nofollow noopener">立即保存</a>
+        </div>
+      </div>
+
+      <footer>
+        <p>由 <a href="/">知乎洞察雷达</a> 提供</p>
+      </footer>
+    </div>
+
+    <div class="floating-bar" id="floating-bar">
+      <div class="floating-inner">
+        <span class="floating-text" id="float-text">💾 保存资源到网盘</span>
+        <a class="btn-download" id="float-btn" href="#" target="_blank" rel="nofollow noopener">立即保存</a>
+      </div>
+    </div>
+
+    <script>
+      (async function() {
+        const id = window.location.pathname.split('/').pop();
+        if (!id) return;
+
+        try {
+          const res = await fetch(`/api/promotions?action=resource&id=${id}`);
+          if (!res.ok) throw new Error('资源不存在');
+          const data = await res.json();
+
+          const pageTitle = data.title + ' - 知乎洞察雷达';
+          const pageUrl = window.location.href;
+
+          document.title = pageTitle;
+          document.getElementById('meta-title').content = pageTitle;
+          document.getElementById('meta-desc').content = data.description;
+          document.getElementById('breadcrumb').textContent = data.title;
+
+          // Update OG tags
+          document.getElementById('og-title').content = pageTitle;
+          document.getElementById('og-desc').content = data.description;
+          document.getElementById('og-url').content = pageUrl;
+
+          // Update Twitter tags
+          document.getElementById('tw-title').content = pageTitle;
+          document.getElementById('tw-desc').content = data.description;
+
+          // Update canonical
+          document.getElementById('canonical').href = pageUrl;
+
+          // Add JSON-LD structured data
+          const ldJson = document.createElement('script');
+          ldJson.type = 'application/ld+json';
+          ldJson.textContent = JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Article",
+            "headline": data.title,
+            "description": data.description,
+            "url": pageUrl,
+            "publisher": {
+              "@type": "Organization",
+              "name": "知乎洞察雷达",
+              "url": "https://zhihu.shoppilot.help/"
+            },
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": pageUrl
+            },
+            "datePublished": data.createdAt || new Date().toISOString(),
+            "about": {
+              "@type": "Thing",
+              "name": data.title
+            }
+          });
+          document.head.appendChild(ldJson);
+          document.getElementById('title').textContent = data.title;
+          document.getElementById('desc').textContent = data.description;
+          document.getElementById('stats').textContent = `👁 ${data.views || 0} 次浏览`;
+
+          // Resource list
+          document.getElementById('resource-list').innerHTML = data.items.map(item => `
+            <div class="resource-item">
+              <div class="resource-info">
+                <h3>${item.name}</h3>
+                <p style="font-size:13px; color:var(--muted)">${item.desc}</p>
+              </div>
+            </div>
+          `).join('');
+
+          // CTA
+          if (data.platform) {
+            document.getElementById('cta-section').style.display = 'block';
+            document.getElementById('cta-desc').textContent = `保存到${data.platform.name}，随时查看`;
+            document.getElementById('cta-btn').href = data.platform.url;
+            document.getElementById('cta-btn').textContent = `打开${data.platform.name}`;
+            document.getElementById('float-text').textContent = `💾 保存到${data.platform.name}`;
+            document.getElementById('float-btn').href = data.platform.url;
+
+            // Track click
+            document.getElementById('cta-btn').addEventListener('click', () => {
+              fetch(`/api/promotions?action=click&id=${id}`, { method: 'POST' });
+            });
+            document.getElementById('float-btn').addEventListener('click', () => {
+              fetch(`/api/promotions?action=click&id=${id}`, { method: 'POST' });
+            });
+          }
+
+          // Floating bar
+          window.addEventListener('scroll', () => {
+            document.getElementById('floating-bar').classList.toggle('show', window.scrollY > 200);
+          });
+        } catch (e) {
+          document.getElementById('title').textContent = '资源不存在';
+          document.getElementById('desc').textContent = e.message;
+        }
+      })();
+    </script>
+  </body>
+</html>

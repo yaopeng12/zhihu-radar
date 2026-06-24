@@ -1,0 +1,41 @@
+{
+  "name": "知乎洞察雷达 - 热榜监控与AI内容分析",
+  "short_name": "知乎雷达",
+  "description": "实时监控知乎、微博、B站热榜，AI 深度分析关键词趋势、用户痛点和内容选题机会。支持 AI 配图生成和资源推广页创建。",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f5f5f5",
+  "theme_color": "#1677ff",
+  "lang": "zh-CN",
+  "orientation": "any",
+  "scope": "/",
+  "categories": ["business", "productivity", "utilities", "news"],
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📡</text></svg>",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "热榜监控",
+      "short_name": "热榜",
+      "description": "查看多平台热榜",
+      "url": "/#hot"
+    },
+    {
+      "name": "内容分析",
+      "short_name": "分析",
+      "description": "AI 深度内容分析",
+      "url": "/#radar"
+    },
+    {
+      "name": "配图生成",
+      "short_name": "配图",
+      "description": "AI 生成正文配图",
+      "url": "/#illustration"
+    }
+  ]
+}

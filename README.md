@@ -12,12 +12,7 @@
 # 知乎搜索 API（必填）
 ZHIHU_SEARCH_URL=https://your-zhihu-open-api.example.com/search
 ZHIHU_API_KEY=你的知乎开放 API Key
-
-# 知乎全局搜索（可选，默认使用 developer.zhihu.com）
-ZHIHU_GLOBAL_SEARCH_URL=https://developer.zhihu.com/api/v1/content/global_search
-
-# 知乎热榜（可选，默认使用 zhihu.com 热榜接口）
-ZHIHU_HOT_LIST_URL=https://www.zhihu.com/api/v3/feed/topstory/hot-lists/total
+ZHIHU_BASE_URL=https://developer.zhihu.com/api/v1
 
 # NVIDIA AI 分析（必填，用于 AI 深度分析功能）
 NVIDIA_API_KEY=你的NVIDIA API Key
@@ -28,56 +23,49 @@ NVIDIA_MODEL=minimaxai/minimax-m3
 
 NVIDIA API Key 免费获取：<https://build.nvidia.com>
 
-## 当前功能
+## 核心功能
 
-- 关键词分析工作台
-- 演示数据模式，GitHub Pages 可直接运行
-- Vercel Function 服务端代理：`/api/search`
-- 默认热度优先：合并 `zhihu_search` 与 `global_search` 候选，按 `RankingScore`、赞同数、评论数综合排序
-- **AI 深度分析**：搜索后自动调用 NVIDIA NIM MiniMax M3 生成趋势摘要、用户痛点和选题建议
-- 趋势摘要、标签、痛点和内容机会展示
-- 问题池表格，包含关注数、回答数和机会等级
-- 选题建议卡片，覆盖公众号、小红书、B 站、播客等场景
-- **实时热榜监控**：对接知乎热榜 TOP50，支持关键词过滤和自动刷新
+### 洞察雷达
+- 关键词搜索分析，自动调用知乎 API
+- AI 深度分析：趋势摘要、用户痛点、选题建议
+- 问题池展示，包含关注数、回答数和机会等级
 - 一键复制 Markdown 报告
-- 无构建依赖，适合 GitHub Pages、Nginx、Docker 静态托管
 
-## 本地运行
+### 实时热榜
+- 对接知乎热榜 TOP50
+- 关键词过滤
+- 服务端缓存 1 小时
+- 热榜数据自动加载
 
-1. 配置环境变量：
+### 网盘推广系统
+- 热榜话题一键生成资源推荐页
+- AI 自动生成资源文案
+- 批量生成（Top 5 热榜话题）
+- 每个资源页独立 SEO URL：`/resource/:id`
+- 支持夸克网盘、百度网盘、阿里云盘
+- 动态 Sitemap 自动生成
+- 浏览量统计
 
-```bash
-cp .env.example .env.local
-# 编辑 .env.local 填入你的 API Key
-```
+## 推广平台配置
 
-2. 启动服务：
+编辑 `data/promotions.json` 配置推广链接：
 
-```bash
-node server.js
-```
-
-3. 访问：
-
-```
-http://localhost:8080
-```
-
-## Vercel 部署
-
-1. 导入 GitHub 仓库到 Vercel
-2. 在 Vercel 项目的 Environment Variables 中配置上述环境变量
-3. 部署后访问你的 Vercel 域名
-
-## Docker 部署
-
-```bash
-docker build -t zhihu-radar .
-docker run --rm -p 8080:8080 \
-  -e ZHIHU_SEARCH_URL="https://your-zhihu-open-api.example.com/search" \
-  -e ZHIHU_API_KEY="你的知乎开放 API Key" \
-  -e NVIDIA_API_KEY="你的NVIDIA API Key" \
-  zhihu-radar
+```json
+{
+  "platforms": [
+    {
+      "id": "quark",
+      "name": "夸克网盘",
+      "icon": "夸",
+      "color": "#6a5acd",
+      "url": "https://pan.quark.cn/s/你的推广码",
+      "description": "注册即送1TB空间",
+      "keywords": ["影视", "小说", "壁纸"],
+      "enabled": true
+    }
+  ],
+  "defaultPlatform": "quark"
+}
 ```
 
 ## API 端点
@@ -86,8 +74,32 @@ docker run --rm -p 8080:8080 \
 |---|---|---|
 | `/api/search?q=关键词` | GET | 搜索知乎并返回标准化报告 |
 | `/api/hot` | GET | 获取知乎热榜 TOP50 |
-| `/api/hot?keyword=AI` | GET | 关键词过滤热榜 |
-| `/api/analyze` | POST | AI 深度分析（自动生成） |
+| `/api/analyze` | POST | AI 深度分析 |
+| `/api/promotions` | GET | 获取推广配置 |
+| `/api/promotions?action=resources` | GET | 获取所有资源页 |
+| `/api/promotions` | POST | 创建资源页 |
+| `/api/resource` | POST | AI 生成资源文案 |
+| `/api/sitemap` | GET | 动态 Sitemap（含资源页） |
+
+## 本地运行
+
+```bash
+# 配置环境变量
+cp .env.example .env.local
+# 编辑 .env.local 填入 API Key
+
+# 启动服务
+node server.js
+
+# 访问
+http://localhost:8080
+```
+
+## Vercel 部署
+
+1. 导入 GitHub 仓库到 Vercel
+2. 配置环境变量
+3. 部署后访问你的域名
 
 ## 项目结构
 
@@ -96,18 +108,29 @@ docker run --rm -p 8080:8080 \
 ├── api
 │   ├── search.js      # 搜索 API
 │   ├── hot.js         # 热榜 API
-│   └── analyze.js     # AI 分析 API
+│   ├── analyze.js     # AI 分析 API
+│   ├── promotions.js  # 推广链接管理
+│   ├── resource.js    # 资源页生成
+│   └── sitemap.js     # 动态 Sitemap
+├── data
+│   ├── promotions.json # 推广平台配置
+│   └── resources.json  # 已生成资源页
 ├── public
 │   ├── index.html
-│   └── assets
-│       ├── app.js
-│       ├── sample-data.js
-│       └── styles.css
-├── server.js          # 本地开发服务器
+│   ├── resource.html   # 资源页模板
+│   └── assets/
+├── server.js
 ├── vercel.json
-├── Dockerfile
 └── README.md
 ```
+
+## SEO 优化
+
+- 每个资源页独立 URL：`/resource/:id`
+- 自动生成 title、description、keywords
+- Open Graph 标签支持社交分享
+- 动态 Sitemap 包含所有资源页
+- 结构化数据标记
 
 ## 开源协议
 

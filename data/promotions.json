@@ -1,0 +1,66 @@
+{
+  "platforms": [
+    {
+      "id": "quark",
+      "name": "夸克网盘",
+      "url": "https://pan.quark.cn/s/你的推广码",
+      "description": "注册即送1TB空间"
+    },
+    {
+      "id": "baidu",
+      "name": "百度网盘",
+      "url": "https://pan.baidu.com/invite?你的推广码",
+      "description": "极速下载体验"
+    }
+  ],
+  "resources": [
+    {
+      "id": "ai-tools",
+      "title": "AI 工具合集",
+      "description": "ChatGPT、Midjourney、Stable Diffusion 等热门 AI 工具",
+      "keywords": ["AI", "ChatGPT", "人工智能", "大模型", "智能体", "Agent"],
+      "items": [
+        { "name": "ChatGPT 使用教程", "desc": "从入门到精通" },
+        { "name": "Midjourney 提示词大全", "desc": "1000+ 精选提示词" },
+        { "name": "AI 绘画工具包", "desc": "Stable Diffusion 一键部署" }
+      ],
+      "platformId": "quark"
+    },
+    {
+      "id": "exam",
+      "title": "考试资料合集",
+      "description": "考研、公考、教资、四六级等考试资料",
+      "keywords": ["考研", "公考", "考公", "教资", "四六级", "雅思", "托福", "考试"],
+      "items": [
+        { "name": "考研政治冲刺资料", "desc": "2026最新版" },
+        { "name": "行测真题5000题", "desc": "含解析" },
+        { "name": "英语四六级词汇", "desc": "高频词+真题" }
+      ],
+      "platformId": "baidu"
+    },
+    {
+      "id": "dev",
+      "title": "编程学习资源",
+      "description": "前端、后端、Python、算法等编程学习资料",
+      "keywords": ["编程", "前端", "后端", "Python", "Java", "程序员", "代码", "开发"],
+      "items": [
+        { "name": "前端学习路线图", "desc": "HTML/CSS/JS/Vue/React" },
+        { "name": "Python 入门到实战", "desc": "100个练手项目" },
+        { "name": "算法面试题精选", "desc": "LeetCode 高频题" }
+      ],
+      "platformId": "quark"
+    },
+    {
+      "id": "design",
+      "title": "设计素材合集",
+      "description": "UI素材、图标、字体、模板等设计资源",
+      "keywords": ["设计", "UI", "素材", "模板", "PS", "Figma", "图标"],
+      "items": [
+        { "name": "UI 设计规范模板", "desc": "iOS/Android/Web" },
+        { "name": "10000+ 图标库", "desc": "可商用" },
+        { "name": "配色方案大全", "desc": "500+ 精选配色" }
+      ],
+      "platformId": "quark"
+    }
+  ]
+}

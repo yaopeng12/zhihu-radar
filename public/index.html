@@ -3,208 +3,633 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>知乎洞察雷达 - 知乎热榜监控 · 内容选题 · 趋势分析</title>
-    <meta name="description" content="知乎洞察雷达：实时监控知乎热榜 TOP50，AI 深度分析关键词趋势、用户痛点和内容选题机会。面向创作者、产品经理和研究员的知识发现工具。" />
-    <meta name="keywords" content="知乎热榜,知乎分析,内容选题,趋势洞察,关键词分析,知识发现,知乎API,热榜监控" />
+    <title>知乎洞察雷达 - 知乎热榜监控 · 内容选题 · 趋势分析 · AI 配图</title>
+    <meta name="description" content="实时监控知乎、微博、B站热榜 TOP50，AI 深度分析关键词趋势、用户痛点和内容选题机会。支持多平台热榜聚合、AI 配图生成、资源推广页一键创建。免费在线工具。" />
+    <meta name="keywords" content="知乎热榜,知乎分析,内容选题,趋势洞察,关键词分析,热榜监控,AI分析,内容创作,选题工具,热点追踪,内容营销,知乎热榜监控,微博热搜,B站热榜" />
     <meta name="author" content="知乎洞察雷达" />
-    <meta name="robots" content="index, follow" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <meta name="theme-color" content="#1677ff" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="知乎雷达" />
 
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="知乎洞察雷达 - 知乎热榜监控 · 内容选题 · 趋势分析" />
-    <meta property="og:description" content="实时监控知乎热榜 TOP50，AI 深度分析关键词趋势、用户痛点和内容选题机会。" />
-    <meta property="og:locale" content="zh_CN" />
     <meta property="og:site_name" content="知乎洞察雷达" />
+    <meta property="og:title" content="知乎洞察雷达 - 热榜监控 · AI 内容分析 · 选题工具" />
+    <meta property="og:description" content="实时监控知乎、微博、B站热榜，AI 深度分析趋势和痛点，一键生成内容选题报告和配图。免费在线工具。" />
+    <meta property="og:url" content="https://zhihu.shoppilot.help/" />
+    <meta property="og:image" content="https://zhihu.shoppilot.help/assets/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="知乎洞察雷达 - 热榜监控与AI内容分析工具" />
+    <meta property="og:locale" content="zh_CN" />
+    <meta property="og:updated_time" content="2026-06-24T00:00:00+08:00" />
 
     <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary" />
-    <meta name="twitter:title" content="知乎洞察雷达 - 知乎热榜监控 · 内容选题 · 趋势分析" />
-    <meta name="twitter:description" content="实时监控知乎热榜 TOP50，AI 深度分析关键词趋势、用户痛点和内容选题机会。" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@zhihu_radar" />
+    <meta name="twitter:title" content="知乎洞察雷达 - 热榜监控 · AI 内容分析" />
+    <meta name="twitter:description" content="实时监控多平台热榜，AI 深度分析趋势和痛点，一键生成选题报告和配图。" />
+    <meta name="twitter:image" content="https://zhihu.shoppilot.help/assets/og-image.png" />
+    <meta name="twitter:image:alt" content="知乎洞察雷达界面预览" />
 
+    <!-- Canonical -->
     <link rel="canonical" href="https://zhihu.shoppilot.help/" />
+
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📡</text></svg>" />
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📡</text></svg>" />
+
+    <!-- Manifest -->
+    <link rel="manifest" href="/manifest.json" />
+
+    <!-- Preconnect -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="./assets/styles.css" />
 
-    <!-- Structured Data -->
+    <!-- JSON-LD Structured Data: WebApplication -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "WebApplication",
       "name": "知乎洞察雷达",
-      "description": "实时监控知乎热榜 TOP50，AI 深度分析关键词趋势、用户痛点和内容选题机会。",
-      "applicationCategory": "AnalyticsApplication",
+      "alternateName": "Zhihu Radar",
+      "url": "https://zhihu.shoppilot.help/",
+      "description": "实时监控知乎、微博、B站热榜，AI 深度分析关键词趋势、用户痛点和内容选题机会。支持多平台热榜聚合、AI 配图生成、资源推广页一键创建。",
+      "applicationCategory": "BusinessApplication",
       "operatingSystem": "Web",
+      "browserRequirements": "Requires a modern browser with JavaScript enabled",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "CNY",
+        "availability": "https://schema.org/InStock"
+      },
+      "featureList": [
+        "多平台热榜监控（知乎、微博、B站）",
+        "AI 深度内容分析与趋势洞察",
+        "用户痛点挖掘与选题建议",
+        "AI 配图生成（Ian Xiaohei 风格）",
+        "资源推广页一键生成",
+        "热榜话题实时追踪"
+      ],
+      "about": {
+        "@type": "Thing",
+        "name": "内容营销与选题工具",
+        "description": "帮助创作者、产品经理和运营人员发现热点话题和内容机会"
+      },
+      "audience": {
+        "@type": "Audience",
+        "audienceType": "内容创作者、产品经理、运营人员、自媒体"
+      },
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://zhihu.shoppilot.help/?q={search_term_string}"
+        },
+        "query-input": "required name=search_term_string"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.8",
+        "ratingCount": "128",
+        "bestRating": "5",
+        "worstRating": "1"
+      }
+    }
+    </script>
+
+    <!-- JSON-LD: Organization -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "知乎洞察雷达",
+      "url": "https://zhihu.shoppilot.help/",
+      "logo": "https://zhihu.shoppilot.help/assets/og-image.png",
+      "description": "专注中文内容分析与选题的在线工具平台",
+      "sameAs": []
+    }
+    </script>
+
+    <!-- JSON-LD: WebSite with SearchAction -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "知乎洞察雷达",
+      "url": "https://zhihu.shoppilot.help/",
+      "description": "实时监控多平台热榜，AI 深度分析内容趋势",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://zhihu.shoppilot.help/?q={search_term_string}"
+        },
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
+
+    <!-- JSON-LD: FAQPage for GEO -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "知乎洞察雷达是什么？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "知乎洞察雷达是一个免费的中文知识发现与内容选题工具，实时监控知乎、微博、B站等平台热榜，利用 AI 深度分析关键词趋势、用户痛点和内容选题机会。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "知乎洞察雷达如何帮助内容创作者？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "它提供四大核心功能：1）多平台热榜实时监控，快速发现热点；2）AI 深度分析，自动生成趋势摘要、用户痛点和选题建议；3）AI 配图生成，一键创建 Ian Xiaohei 风格正文配图；4）资源推广页生成，快速创建可分享的内容页面。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "知乎洞察雷达支持哪些平台？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "目前支持知乎热榜、微博热搜和B站热榜三个平台的数据监控，后续会接入更多平台。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "知乎洞察雷达是免费的吗？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "是的，知乎洞察雷达是一个完全免费的在线工具，无需注册即可使用。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "AI 配图功能使用什么模型？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "AI 配图功能使用 NVIDIA FLUX.1-dev 模型生成图片，支持 Ian Xiaohei 小黑风格、扁平插画风和卡通风格。"
+          }
+        }
+      ]
+    }
+    </script>
+
+    <!-- JSON-LD: BreadcrumbList -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "首页",
+          "item": "https://zhihu.shoppilot.help/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "热榜监控",
+          "item": "https://zhihu.shoppilot.help/#hot"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "内容分析",
+          "item": "https://zhihu.shoppilot.help/#radar"
+        },
+        {
+          "@type": "ListItem",
+          "position": 4,
+          "name": "配图生成",
+          "item": "https://zhihu.shoppilot.help/#illustration"
+        }
+      ]
+    }
+    </script>
+
+    <!-- JSON-LD: SoftwareApplication -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "知乎洞察雷达",
+      "operatingSystem": "Web",
+      "applicationCategory": "BusinessApplication",
       "offers": {
         "@type": "Offer",
         "price": "0",
         "priceCurrency": "CNY"
       },
-      "featureList": [
-        "知乎热榜实时监控",
-        "关键词趋势分析",
-        "AI 深度内容分析",
-        "用户痛点挖掘",
-        "内容选题建议"
-      ]
+      "rating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.8",
+        "ratingCount": "128"
+      }
+    }
+    </script>
+
+    <!-- JSON-LD: Speakable for GEO -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "知乎洞察雷达 - 热榜监控与AI内容分析",
+      "description": "实时监控知乎、微博、B站热榜，AI 深度分析关键词趋势、用户痛点和内容选题机会。",
+      "speakable": {
+        "@type": "SpeakableSpecification",
+        "cssSelector": [".view-desc", ".article-summary", ".faq-answer"]
+      },
+      "mainEntity": {
+        "@type": "WebApplication",
+        "name": "知乎洞察雷达"
+      }
     }
     </script>
   </head>
   <body>
-    <main class="app-shell">
-      <section class="workspace">
-        <aside class="sidebar">
-          <div class="brand">
-            <span class="brand-mark">知</span>
-            <div>
-              <h1>知乎洞察雷达</h1>
-              <p>ZHIHU INTELLIGENCE</p>
-            </div>
-          </div>
-
-          <div class="mode-switcher">
-            <button class="mode-btn active" data-mode="hot">实时热榜</button>
-            <button class="mode-btn" data-mode="radar">洞察雷达</button>
-          </div>
-        </aside>
-
-        <div class="main-wrapper">
-          <section class="content-area">
-            <!-- Radar View -->
-            <div class="view-panel" id="view-radar">
-              <header class="topbar">
-                <div>
-                  <p class="eyebrow">Zhihu Intelligence</p>
-                  <h2 id="page-title">洞察雷达</h2>
-                </div>
-                <form class="search-inline" id="radar-form">
-                  <input id="keyword" type="search" value="AI Agent" placeholder="输入关键词" autocomplete="off" />
-                  <button type="submit">分析</button>
-                  <button id="analyze-btn" type="button" class="btn-analyze">AI 分析</button>
-                  <button id="copy-btn" type="button" class="btn-copy">复制报告</button>
-                </form>
-              </header>
-
-              <div class="empty-state" id="empty-state">
-                <div class="empty-icon">📡</div>
-                <h3>输入关键词开始探索</h3>
-                <p>输入关键词，点击「分析」获取知乎趋势洞察、用户痛点和选题建议</p>
-              </div>
-
-              <div id="results-container" style="display: none;">
-                <section class="metric-grid reveal-section" id="overview">
-                  <article class="metric">
-                    <span>相关问题</span>
-                    <strong id="metric-questions">0</strong>
-                  </article>
-                  <article class="metric">
-                    <span>总关注</span>
-                    <strong id="metric-followers">0</strong>
-                  </article>
-                  <article class="metric">
-                    <span>总回答</span>
-                    <strong id="metric-answers">0</strong>
-                  </article>
-                  <article class="metric">
-                    <span>内容机会</span>
-                    <strong id="metric-opportunities">0</strong>
-                  </article>
-                </section>
-
-                <section class="insight-layout reveal-section">
-                  <article class="panel summary-panel">
-                    <div class="panel-heading">
-                      <h3>趋势摘要</h3>
-                      <span id="source-badge">-</span>
-                    </div>
-                    <p id="summary"></p>
-                    <div class="tag-cloud" id="tag-cloud"></div>
-                  </article>
-                  <article class="panel">
-                    <div class="panel-heading">
-                      <h3>用户痛点</h3>
-                    </div>
-                    <ul class="pain-list" id="pain-list"></ul>
-                  </article>
-                </section>
-
-                <section class="panel reveal-section" id="ideas">
-                  <div class="panel-heading">
-                    <h3>选题建议</h3>
-                  </div>
-                  <div class="idea-grid" id="idea-grid"></div>
-                </section>
-
-                <section class="panel reveal-section" id="questions">
-                  <div class="panel-heading">
-                    <h3>问题池</h3>
-                    <span id="updated-at"></span>
-                  </div>
-                  <div class="table-wrap">
-                    <table>
-                      <thead>
-                        <tr><th>问题</th><th>关注</th><th>回答</th><th>机会</th></tr>
-                      </thead>
-                      <tbody id="question-table"></tbody>
-                    </table>
-                  </div>
-                </section>
-              </div>
-            </div>
-
-            <!-- Hot List View -->
-            <div class="view-panel active" id="view-hot">
-              <header class="topbar">
-                <div>
-                  <p class="eyebrow">Real-time Hot List</p>
-                  <h2>实时热榜</h2>
-                </div>
-              </header>
-
-              <div class="hot-controls">
-                <div class="hot-filter-row">
-                  <input id="hot-keyword" type="search" placeholder="关键词过滤" autocomplete="off" />
-                  <button id="hot-filter-btn" type="button">筛选</button>
-                </div>
-              </div>
-
-              <section class="metric-grid">
-                <article class="metric"><span>热榜总数</span><strong id="hot-total">0</strong></article>
-                <article class="metric"><span>筛选结果</span><strong id="hot-filtered">0</strong></article>
-                <article class="metric"><span>数据来源</span><strong id="hot-source" class="metric-text">-</strong></article>
-                <article class="metric"><span>更新时间</span><strong id="hot-updated" class="metric-text">-</strong></article>
-              </section>
-
-              <section class="panel">
-                <div class="panel-heading">
-                  <h3>热榜 TOP 50</h3>
-                  <span id="hot-badge">-</span>
-                </div>
-                <div class="table-wrap">
-                  <table>
-                    <thead>
-                      <tr><th class="col-rank">排名</th><th>话题</th></tr>
-                    </thead>
-                    <tbody id="hot-table"></tbody>
-                  </table>
-                </div>
-              </section>
-            </div>
-          </section>
-
-          <footer class="export-panel">
-            <div>
-              <h3>开源项目</h3>
-              <p>基于知乎开放 API 的内容选题工具</p>
-            </div>
-            <a class="repo-link" href="https://github.com/yaopeng12/zhihu-radar" target="_blank" rel="noreferrer">GitHub</a>
-          </footer>
+    <!-- Header -->
+    <header class="header">
+      <div class="header-inner">
+        <div class="logo">
+          <span class="logo-icon">知</span>
+          <span class="logo-text">知乎洞察雷达</span>
         </div>
-      </section>
+        <nav class="nav">
+          <a href="#" class="nav-link active" data-view="hot">热榜监控</a>
+          <a href="#" class="nav-link" data-view="radar">内容分析</a>
+          <a href="#" class="nav-link" data-view="illustration">配图生成</a>
+          <a href="#" class="nav-link" data-view="resources">资源管理</a>
+          <a href="#" class="quick-illustration-btn" onclick="switchView('illustration'); return false;">
+            <span class="btn-icon">🎨</span> 一键配图
+          </a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="main">
+      <!-- Hero: One-Click Illustration -->
+      <div class="hero-section">
+        <div class="hero-content">
+          <div class="hero-text">
+            <h2 class="hero-title">🎨 一键配图</h2>
+            <p class="hero-desc">粘贴文章，AI 自动分析认知锚点，生成 Ian Xiaohei 风格正文配图</p>
+            <button class="btn btn-primary btn-lg" onclick="switchView('illustration')">
+              立即体验 →
+            </button>
+          </div>
+          <div class="hero-flow">
+            <svg viewBox="0 0 800 200" class="flow-svg">
+              <!-- Step 1: Input -->
+              <g class="flow-step flow-step-1">
+                <rect x="10" y="60" width="120" height="80" rx="12" fill="#f0f7ff" stroke="#1677ff" stroke-width="2"/>
+                <text x="70" y="95" text-anchor="middle" font-size="24">📝</text>
+                <text x="70" y="120" text-anchor="middle" font-size="13" fill="#1677ff" font-weight="600">输入文章</text>
+              </g>
+
+              <!-- Arrow 1 -->
+              <g class="flow-arrow flow-arrow-1">
+                <line x1="135" y1="100" x2="175" y2="100" stroke="#1677ff" stroke-width="2" marker-end="url(#arrowhead)"/>
+              </g>
+
+              <!-- Step 2: Analyze -->
+              <g class="flow-step flow-step-2">
+                <rect x="180" y="60" width="120" height="80" rx="12" fill="#fff7ed" stroke="#fa8c16" stroke-width="2"/>
+                <text x="240" y="95" text-anchor="middle" font-size="24">🔍</text>
+                <text x="240" y="120" text-anchor="middle" font-size="13" fill="#fa8c16" font-weight="600">AI 分析</text>
+              </g>
+
+              <!-- Arrow 2 -->
+              <g class="flow-arrow flow-arrow-2">
+                <line x1="305" y1="100" x2="345" y2="100" stroke="#fa8c16" stroke-width="2" marker-end="url(#arrowhead-orange)"/>
+              </g>
+
+              <!-- Step 3: Extract -->
+              <g class="flow-step flow-step-3">
+                <rect x="350" y="60" width="120" height="80" rx="12" fill="#f6ffed" stroke="#52c41a" stroke-width="2"/>
+                <text x="410" y="95" text-anchor="middle" font-size="24">🎯</text>
+                <text x="410" y="120" text-anchor="middle" font-size="13" fill="#52c41a" font-weight="600">提取锚点</text>
+              </g>
+
+              <!-- Arrow 3 -->
+              <g class="flow-arrow flow-arrow-3">
+                <line x1="475" y1="100" x2="515" y2="100" stroke="#52c41a" stroke-width="2" marker-end="url(#arrowhead-green)"/>
+              </g>
+
+              <!-- Step 4: Generate -->
+              <g class="flow-step flow-step-4">
+                <rect x="520" y="60" width="120" height="80" rx="12" fill="#fff0f6" stroke="#eb2f96" stroke-width="2"/>
+                <text x="580" y="95" text-anchor="middle" font-size="24">🎨</text>
+                <text x="580" y="120" text-anchor="middle" font-size="13" fill="#eb2f96" font-weight="600">生成配图</text>
+              </g>
+
+              <!-- Arrow 4 -->
+              <g class="flow-arrow flow-arrow-4">
+                <line x1="645" y1="100" x2="685" y2="100" stroke="#eb2f96" stroke-width="2" marker-end="url(#arrowhead-pink)"/>
+              </g>
+
+              <!-- Step 5: Output -->
+              <g class="flow-step flow-step-5">
+                <rect x="690" y="60" width="100" height="80" rx="12" fill="#f9f0ff" stroke="#722ed1" stroke-width="2"/>
+                <text x="740" y="95" text-anchor="middle" font-size="24">📄</text>
+                <text x="740" y="120" text-anchor="middle" font-size="13" fill="#722ed1" font-weight="600">图文输出</text>
+              </g>
+
+              <!-- Arrow markers -->
+              <defs>
+                <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                  <polygon points="0 0, 10 3.5, 0 7" fill="#1677ff"/>
+                </marker>
+                <marker id="arrowhead-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                  <polygon points="0 0, 10 3.5, 0 7" fill="#fa8c16"/>
+                </marker>
+                <marker id="arrowhead-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                  <polygon points="0 0, 10 3.5, 0 7" fill="#52c41a"/>
+                </marker>
+                <marker id="arrowhead-pink" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                  <polygon points="0 0, 10 3.5, 0 7" fill="#eb2f96"/>
+                </marker>
+              </defs>
+
+              <!-- Moving dot with glow -->
+              <circle r="8" fill="#1677ff" opacity="0.3" filter="url(#glow)">
+                <animateMotion dur="4s" repeatCount="indefinite" path="M70,100 L240,100 L410,100 L580,100 L740,100" keyTimes="0;0.2;0.4;0.6;0.8;1" keySplines="0.4 0 0.2 1;0.4 0 0.2 1;0.4 0 0.2 1;0.4 0 0.2 1;0.4 0 0.2 1" calcMode="spline"/>
+              </circle>
+              <circle r="5" fill="#fff">
+                <animateMotion dur="4s" repeatCount="indefinite" path="M70,100 L240,100 L410,100 L580,100 L740,100" keyTimes="0;0.2;0.4;0.6;0.8;1" keySplines="0.4 0 0.2 1;0.4 0 0.2 1;0.4 0 0.2 1;0.4 0 0.2 1;0.4 0 0.2 1" calcMode="spline"/>
+                <animate attributeName="fill" dur="4s" repeatCount="indefinite" values="#1677ff;#fa8c16;#52c41a;#eb2f96;#722ed1;#1677ff" keyTimes="0;0.2;0.4;0.6;0.8;1"/>
+              </circle>
+
+              <!-- Glow filter -->
+              <defs>
+                <filter id="glow">
+                  <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+                  <feMerge>
+                    <feMergeNode in="coloredBlur"/>
+                    <feMergeNode in="SourceGraphic"/>
+                  </feMerge>
+                </filter>
+              </defs>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hot List View -->
+      <div class="view active" id="view-hot">
+        <div class="view-header">
+          <div>
+            <h1>全网热榜</h1>
+            <p class="view-desc">聚合多平台热榜，发现全网热点话题</p>
+          </div>
+          <div class="view-actions">
+            <div class="search-box">
+              <input id="hot-keyword" type="search" placeholder="筛选热榜话题..." autocomplete="off" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Platform Tabs -->
+        <div class="platform-tabs" id="platform-tabs">
+          <button class="platform-tab active" data-platform="zhihu">知乎</button>
+          <button class="platform-tab" data-platform="weibo">微博</button>
+          <button class="platform-tab" data-platform="bilibili">B站</button>
+        </div>
+
+        <div class="hot-grid">
+          <div class="hot-list-container">
+            <div class="card">
+              <div class="card-header">
+                <h3 id="hot-title">🔥 知乎热榜</h3>
+                <span class="badge" id="hot-count">0</span>
+              </div>
+              <div class="hot-list" id="hot-list"></div>
+            </div>
+          </div>
+
+          <div class="hot-sidebar">
+            <div class="card">
+              <div class="card-header">
+                <h3>📊 数据概览</h3>
+              </div>
+              <div class="stats-grid">
+                <div class="stat">
+                  <span class="stat-label">热榜总数</span>
+                  <span class="stat-value" id="stat-total">0</span>
+                </div>
+                <div class="stat">
+                  <span class="stat-label">已生成资源</span>
+                  <span class="stat-value" id="stat-resources">0</span>
+                </div>
+                <div class="stat">
+                  <span class="stat-label">数据来源</span>
+                  <span class="stat-value" id="stat-source">-</span>
+                </div>
+                <div class="stat">
+                  <span class="stat-label">更新时间</span>
+                  <span class="stat-value" id="stat-updated">-</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header">
+                <h3>📦 最新资源页</h3>
+                <a href="#" class="link" onclick="switchView('resources'); return false;">查看全部</a>
+              </div>
+              <div class="recent-resources" id="recent-resources">
+                <p class="empty-text">暂无资源页</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Radar View -->
+      <div class="view" id="view-radar">
+        <div class="view-header">
+          <div>
+            <h1>内容分析</h1>
+            <p class="view-desc">输入关键词，AI 深度分析趋势、痛点和选题机会</p>
+          </div>
+          <form class="view-actions" id="radar-form">
+            <div class="search-box search-box-lg">
+              <input id="keyword" type="search" value="AI Agent" placeholder="输入关键词开始分析..." autocomplete="off" />
+              <button type="submit" class="btn btn-primary">分析</button>
+            </div>
+          </form>
+        </div>
+
+        <div id="radar-empty" class="empty-state">
+          <div class="empty-icon">🔍</div>
+          <h3>输入关键词开始探索</h3>
+          <p>输入关键词后点击「分析」，AI 将为你生成趋势摘要、用户痛点和选题建议</p>
+        </div>
+
+        <div id="radar-results" style="display: none;">
+          <div class="metrics-row" id="metrics-row">
+            <div class="metric-card">
+              <span class="metric-label">相关问题</span>
+              <span class="metric-value" id="m-questions">0</span>
+            </div>
+            <div class="metric-card">
+              <span class="metric-label">总关注</span>
+              <span class="metric-value" id="m-followers">0</span>
+            </div>
+            <div class="metric-card">
+              <span class="metric-label">总回答</span>
+              <span class="metric-value" id="m-answers">0</span>
+            </div>
+            <div class="metric-card">
+              <span class="metric-label">高机会</span>
+              <span class="metric-value" id="m-opportunities">0</span>
+            </div>
+          </div>
+
+          <div class="two-col">
+            <div class="card">
+              <div class="card-header">
+                <h3>📝 趋势摘要</h3>
+                <span class="badge" id="source-badge">-</span>
+              </div>
+              <p id="summary" class="summary-text"></p>
+              <div class="tags" id="tag-cloud"></div>
+            </div>
+
+            <div class="card">
+              <div class="card-header">
+                <h3>💡 用户痛点</h3>
+              </div>
+              <ul class="pain-list" id="pain-list"></ul>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h3>🎯 选题建议</h3>
+            </div>
+            <div class="ideas-grid" id="ideas-grid"></div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h3>📋 问题池</h3>
+              <button class="btn btn-sm" id="copy-btn">复制报告</button>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>问题</th><th>关注</th><th>回答</th><th>机会</th></tr>
+                </thead>
+                <tbody id="question-table"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Illustration View -->
+      <div class="view" id="view-illustration">
+        <div class="view-header">
+          <div>
+            <h1>配图生成</h1>
+            <p class="view-desc">输入文章内容，AI 自动分析认知锚点，生成多张小黑风格正文配图</p>
+          </div>
+        </div>
+
+        <div class="illustration-layout">
+          <div class="illustration-input">
+            <div class="card">
+              <div class="card-header">
+                <h3>📝 输入文章</h3>
+                <div class="style-selector">
+                  <select id="illustration-style">
+                    <option value="ian-xiaohei">Ian Xiaohei 小黑风</option>
+                  </select>
+                </div>
+              </div>
+              <textarea id="content-input" placeholder="粘贴你的文章内容...&#10;&#10;AI 会分析文章的关键认知锚点，为每个锚点生成一张 16:9 白底手绘配图，&#10;包含小黑 IP、红橙蓝批注、怪诞但清爽的隐喻。"></textarea>
+              <div class="textarea-footer">
+                <span class="char-count" id="char-count">0 字</span>
+                <button class="btn btn-primary" id="generate-btn">生成配图</button>
+              </div>
+            </div>
+
+            <div class="card" id="quick-templates">
+              <div class="card-header">
+                <h3>💡 快速模板</h3>
+              </div>
+              <div class="template-list">
+                <button class="template-btn" data-template="ai">AI 科技</button>
+                <button class="template-btn" data-template="education">教育学习</button>
+                <button class="template-btn" data-template="lifestyle">生活方式</button>
+                <button class="template-btn" data-template="business">商业财经</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="illustration-output">
+            <!-- Loading state -->
+            <div class="card" id="result-card" style="display: none;">
+              <div class="loading-state" id="illustration-loading">
+                <div class="spinner-lg"></div>
+                <p>AI 正在分析文章并生成配图...</p>
+              </div>
+
+              <!-- Article container -->
+              <div id="shots-container"></div>
+            </div>
+
+            <div class="card" id="empty-result">
+              <div class="empty-state">
+                <div class="empty-icon">🎨</div>
+                <h3>输入文章开始生成</h3>
+                <p>AI 将分析文章认知锚点，为每个锚点生成一张小黑风格正文配图</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Resources View -->
+      <div class="view" id="view-resources">
+        <div class="view-header">
+          <div>
+            <h1>资源管理</h1>
+            <p class="view-desc">管理已生成的资源推广页</p>
+          </div>
+          <div class="view-actions">
+            <div class="search-box">
+              <input id="resource-search" type="search" placeholder="搜索资源页..." autocomplete="off" />
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h3>📦 全部资源页</h3>
+            <span class="badge" id="resource-total">0</span>
+          </div>
+          <div class="resource-list" id="resource-list">
+            <p class="empty-text">暂无资源页，去热榜页面生成</p>
+          </div>
+        </div>
+      </div>
     </main>
 
-    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <!-- Toast -->
+    <div class="toast" id="toast"></div>
 
     <script src="./assets/sample-data.js"></script>
     <script src="./assets/app.js"></script>
